@@ -42,7 +42,7 @@ export default function PhonicsGame() {
 
   useEffect(() => {
     setTimeout(() => speak(`The letter ${q.letter} makes the sound... ${q.sound}`), 400);
-  }, [current]);
+  }, [current]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleKnew(knew: boolean) {
     if (knew) setScore(s => s + 1);
