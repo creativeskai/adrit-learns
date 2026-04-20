@@ -7,7 +7,7 @@ const LIGHT = "#e0f2f1";
 
 const letters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"];
 
-const guidePoints: Record<string, {x:number,y:number}[][]> = {
+const guidePoints: Record<string, {x:number,y:number}[][][]> = {
   A: [[[{x:150,y:280},{x:200,y:80},{x:250,y:280}],[{x:165,y:195},{x:235,y:195}]]],
   B: [[[{x:130,y:80},{x:130,y:280}],[{x:130,y:80},{x:200,y:80},{x:220,y:100},{x:220,y:160},{x:200,y:180},{x:130,y:180}],[{x:130,y:180},{x:210,y:180},{x:230,y:200},{x:230,y:260},{x:210,y:280},{x:130,y:280}]]],
   C: [[[{x:230,y:110},{x:200,y:80},{x:150,y:80},{x:110,y:120},{x:110,y:240},{x:150,y:280},{x:200,y:280},{x:230,y:250}]]],
@@ -123,7 +123,6 @@ export default function TracingGame() {
     if (!canvas) return;
     const pos = getPos(e, canvas);
     setCurrentStroke(s => [...s, pos]);
-    drawGuide();
   }
 
   function endDraw(e: React.TouchEvent | React.MouseEvent) {

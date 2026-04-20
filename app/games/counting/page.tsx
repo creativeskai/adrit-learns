@@ -20,7 +20,7 @@ function makeOptions(correct: number): number[] {
     const n = Math.max(1, correct + Math.floor(Math.random() * 5) - 2);
     opts.add(n);
   }
-  return [...opts].sort(() => Math.random() - 0.5);
+  return Array.from(opts).sort(() => Math.random() - 0.5);
 }
 
 function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }

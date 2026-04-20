@@ -14,7 +14,7 @@ function makeRound() {
   while (opts.size < 4) {
     opts.add(Math.max(1, correct + Math.floor(Math.random() * 7) - 3));
   }
-  return { a, b, correct, options: [...opts].sort(() => Math.random() - 0.5) };
+  return { a, b, correct, options: Array.from(opts).sort(() => Math.random() - 0.5) };
 }
 
 export default function AdditionGame() {
