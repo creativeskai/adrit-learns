@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ResultScreen from "@/components/ResultScreen";
 
 const COLOR = "#e74c3c";
@@ -24,10 +24,14 @@ export default function WordBuilderGame() {
   const [set] = useState(() => shuffle(words).slice(0, 8));
   const [current, setCurrent] = useState(0);
   const [placed, setPlaced] = useState<string[]>([]);
-  const [letters, setLetters] = useState<string[]>(() => shuffle(words[0].word.split("")));
+  const [letters, setLetters] = useState<string[]>([]);
   const [wrong, setWrong] = useState(false);
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
+
+  useEffect(() => {
+    initLetters(set[current].word);
+  }, [current, set]);
 
   const q = set[current];
 
