@@ -31,7 +31,7 @@ export default function WordBuilderGame() {
 
   useEffect(() => {
     initLetters(set[current].word);
-  }, [current, set]);
+  }, [current]);
 
   const q = set[current];
 
