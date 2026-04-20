@@ -29,17 +29,17 @@ export default function WordBuilderGame() {
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
 
-  useEffect(() => {
-    initLetters(set[current].word);
-  }, [current]);
-
-  const q = set[current];
-
   function initLetters(word: string) {
     setLetters(shuffle(word.split("")));
     setPlaced([]);
     setWrong(false);
   }
+
+  useEffect(() => {
+    initLetters(set[current].word);
+  }, [current]);
+
+  const q = set[current];
 
   function tapLetter(i: number) {
     if (placed.length >= q.word.length) return;
