@@ -33,7 +33,14 @@ const rounds = [
   { letter: "X", correct: "Xylophone",options: [{ l: "Fish", e: "🐟" }, { l: "Tiger", e: "🐯" }, { l: "Xylophone", e: "🎵" }, { l: "Egg", e: "🥚" }] },
   { letter: "Y", correct: "Yak",      options: [{ l: "Yak", e: "🐃" }, { l: "Sun", e: "☀️" }, { l: "Ball", e: "⚽" }, { l: "Whale", e: "🐋" }] },
   { letter: "Z", correct: "Zebra",    options: [{ l: "Rabbit", e: "🐰" }, { l: "Moon", e: "🌙" }, { l: "Zebra", e: "🦓" }, { l: "Hat", e: "🎩" }] },
+  { letter: "A", correct: "Anchor",   options: [{ l: "Anchor", e: "⚓" }, { l: "Plane", e: "✈️" }, { l: "Boat", e: "⛵" }, { l: "Train", e: "🚂" }] },
+  { letter: "B", correct: "Butterfly", options: [{ l: "Butterfly", e: "🦋" }, { l: "Bee", e: "🐝" }, { l: "Bird", e: "🐦" }, { l: "Bat", e: "🦇" }] },
+  { letter: "C", correct: "Cake",      options: [{ l: "Cake", e: "🎂" }, { l: "Cookie", e: "🍪" }, { l: "Candy", e: "🍭" }, { l: "Carrot", e: "🥕" }] },
+  { letter: "D", correct: "Diamond",  options: [{ l: "Diamond", e: "💎" }, { l: "Door", e: "🚪" }, { l: "Drum", e: "🥁" }, { l: "Dinosaur", e: "🦕" }] },
+  { letter: "E", correct: "Elephant", options: [{ l: "Elephant", e: "🐘" }, { l: "Emu", e: "🐦" }, { l: "Eagle", e: "🦅" }, { l: "Eel", e: "🐍" }] },
+  { letter: "F", correct: "Flower",   options: [{ l: "Flower", e: "🌻" }, { l: "Flamingo", e: "🦩" }, { l: "Fox", e: "🦊" }, { l: "Frog", e: "🐸" }] },
 ];
+
 
 function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 

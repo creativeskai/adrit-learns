@@ -16,7 +16,30 @@ const words = [
   { word: "PIG", emoji: "🐷", hint: "A pink farm animal" },
   { word: "BOX", emoji: "📦", hint: "You pack things in this" },
   { word: "MAP", emoji: "🗺️", hint: "It shows you directions" },
+  { word: "BAT", emoji: "🦇", hint: "A flying animal at night" },
+  { word: "HAT", emoji: "🎩", hint: "You wear this on your head" },
+  { word: "CAR", emoji: "🚗", hint: "A vehicle with 4 wheels" },
+  { word: "JAR", emoji: "🫙", hint: "You store food in this" },
+  { word: "BED", emoji: "🛏️", hint: "You sleep in this" },
+  { word: "RED", emoji: "🔴", hint: "The color of a rose" },
+  { word: "FUN", emoji: "🎉", hint: "What games are all about" },
+  { word: "RUN", emoji: "🏃", hint: "Moving fast on your feet" },
+  { word: "BIG", emoji: "📏", hint: "Not small, very large" },
+  { word: "HOT", emoji: "🔥", hint: "Very warm temperature" },
+  { word: "BAG", emoji: "👜", hint: "You carry things in this" },
+  { word: "BUG", emoji: "🐛", hint: "A small crawling insect" },
+  { word: "RAN", emoji: "💨", hint: "Past tense of run" },
+  { word: "SIT", emoji: "🪑", hint: "What you do in a chair" },
+  { word: "HIT", emoji: "⚾", hint: "To strike something" },
+  { word: "PEN", emoji: "🖊️", hint: "You write with this" },
+  { word: "GET", emoji: "🔄", hint: "To obtain or receive" },
+  { word: "LET", emoji: "🤝", hint: "To allow someone to do" },
+  { word: "MAN", emoji: "👨", hint: "An adult male person" },
+  { word: "TAN", emoji: "🏜️", hint: "Brown color from sun" },
+  { word: "TOP", emoji: "🔝", hint: "The highest part" },
+  { word: "POT", emoji: "🍲", hint: "You cook food in this" },
 ];
+
 
 function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 

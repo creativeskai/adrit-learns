@@ -12,6 +12,13 @@ const allRounds = [
   { count: 7, emoji: "🌸" }, { count: 8, emoji: "🐢" }, { count: 9, emoji: "🍇" },
   { count: 10, emoji: "🎈" }, { count: 3, emoji: "🐸" }, { count: 5, emoji: "🍓" },
   { count: 4, emoji: "🦆" }, { count: 2, emoji: "🐝" }, { count: 6, emoji: "🌻" },
+  { count: 1, emoji: "🌙" }, { count: 2, emoji: "🚗" }, { count: 3, emoji: "🎁" },
+  { count: 4, emoji: "🍕" }, { count: 5, emoji: "🎮" }, { count: 6, emoji: "📚" },
+  { count: 7, emoji: "✏️" }, { count: 8, emoji: "🏠" }, { count: 9, emoji: "🌈" },
+  { count: 10, emoji: "⚽" }, { count: 1, emoji: "🍪" }, { count: 2, emoji: "🐱" },
+  { count: 3, emoji: "🎨" }, { count: 4, emoji: "🦁" }, { count: 5, emoji: "🎺" },
+  { count: 6, emoji: "🚀" }, { count: 7, emoji: "🦖" }, { count: 8, emoji: "👑" },
+  { count: 9, emoji: "🎪" }, { count: 10, emoji: "🎭" },
 ];
 
 function makeOptions(correct: number): number[] {

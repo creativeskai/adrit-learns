@@ -6,19 +6,30 @@ import ResultScreen from "@/components/ResultScreen";
 const COLOR = "#9b59b6";
 const LIGHT = "#f3e8ff";
 
-function makeRound() {
-  const a = Math.floor(Math.random() * 9) + 1;
-  const b = Math.floor(Math.random() * 9) + 1;
-  const correct = a + b;
+const rounds = [
+  { a: 1, b: 1, correct: 2 }, { a: 1, b: 2, correct: 3 }, { a: 1, b: 3, correct: 4 }, { a: 1, b: 4, correct: 5 },
+  { a: 1, b: 5, correct: 6 }, { a: 2, b: 2, correct: 4 }, { a: 2, b: 3, correct: 5 }, { a: 2, b: 4, correct: 6 },
+  { a: 2, b: 5, correct: 7 }, { a: 2, b: 6, correct: 8 }, { a: 3, b: 1, correct: 4 }, { a: 3, b: 2, correct: 5 },
+  { a: 3, b: 3, correct: 6 }, { a: 3, b: 4, correct: 7 }, { a: 3, b: 5, correct: 8 }, { a: 3, b: 6, correct: 9 },
+  { a: 4, b: 1, correct: 5 }, { a: 4, b: 2, correct: 6 }, { a: 4, b: 3, correct: 7 }, { a: 4, b: 4, correct: 8 },
+  { a: 4, b: 5, correct: 9 }, { a: 5, b: 1, correct: 6 }, { a: 5, b: 2, correct: 7 }, { a: 5, b: 3, correct: 8 },
+  { a: 5, b: 4, correct: 9 }, { a: 5, b: 5, correct: 10 }, { a: 6, b: 1, correct: 7 }, { a: 6, b: 2, correct: 8 },
+  { a: 6, b: 3, correct: 9 }, { a: 7, b: 1, correct: 8 }, { a: 7, b: 2, correct: 9 }, { a: 8, b: 1, correct: 9 },
+];
+
+function makeOptions(correct: number) {
   const opts = new Set([correct]);
   while (opts.size < 4) {
     opts.add(Math.max(1, correct + Math.floor(Math.random() * 7) - 3));
   }
-  return { a, b, correct, options: Array.from(opts).sort(() => Math.random() - 0.5) };
+  return Array.from(opts).sort(() => Math.random() - 0.5);
 }
 
 export default function AdditionGame() {
-  const [set] = useState(() => Array.from({ length: 12 }, makeRound));
+  const [set] = useState(() => {
+    const shuffled = [...rounds].sort(() => Math.random() - 0.5).slice(0, 12);
+    return shuffled.map(r => ({ ...r, options: makeOptions(r.correct) }));
+  });
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
