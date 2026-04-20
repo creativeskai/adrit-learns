@@ -3,7 +3,7 @@
 const games = [
   { href: "/games/alphabet",   emoji: "🔤", label: "Letters",      sub: "A to Z recognition",    color: "#e07b39", light: "#fde8d8", ready: true },
   { href: "/games/counting",   emoji: "🔢", label: "Counting",     sub: "Count objects 1–10",    color: "#3a7bd5", light: "#dbeeff", ready: true },
-  { href: "/games/addition",   emoji: "➕", label: "Addition",     sub: "Simple sums",            color: "#9b59b6", light: "#f3e8ff", ready: true },
+  { href: "/games/addition",   emoji: "➕", label: "Addition",     sub: "Sums & counting",            color: "#9b59b6", light: "#f3e8ff", ready: true },
   { href: "/games/wordbuilder",emoji: "🧩", label: "Word Builder", sub: "Spell with letters",    color: "#e74c3c", light: "#fdecea", ready: true },
   { href: "/games/evs",        emoji: "🌿", label: "EVS",          sub: "Nature & animals",      color: "#27ae60", light: "#e8f8f0", ready: true },
   { href: "/games/phonics",    emoji: "🔊", label: "Phonics",      sub: "Letter sounds",         color: "#f39c12", light: "#fff8e1", ready: true },

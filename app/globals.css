@@ -12,3 +12,66 @@ body {
   font-family: sans-serif;
   background: #fef9f0;
 }
+
+/* Feedback animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-20px) rotate(5deg); }
+  50% { transform: translateY(-40px) rotate(0deg); }
+  75% { transform: translateY(-20px) rotate(-5deg); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Abacus styles */
+.abacus {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.abacus-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.abacus-bead {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ff6b6b, #ee5a52);
+  border: 2px solid #cc4545;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.abacus-bead.active {
+  background: linear-gradient(145deg, #4ecdc4, #44a08d);
+  border-color: #2d7d6b;
+  transform: scale(1.1);
+}
+
+.abacus-rod {
+  width: 4px;
+  height: 120px;
+  background: #8b4513;
+  border-radius: 2px;
+  position: relative;
+}
+
+.abacus-rod::before,
+.abacus-rod::after {
+  content: '';
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  height: 2px;
+  background: #654321;
+}
+
+.abacus-rod::before { top: 40px; }
+.abacus-rod::after { bottom: 40px; }

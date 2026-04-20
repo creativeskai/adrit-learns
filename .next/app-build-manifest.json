@@ -1,82 +1,35 @@
 {
   "pages": {
-    "/_not-found/page": [
-      "static/chunks/webpack-889906d2d9470bce.js",
-      "static/chunks/fd9d1056-4e1a26e2d413ba3c.js",
-      "static/chunks/23-db261fb0c05458b3.js",
-      "static/chunks/main-app-ff123cd111801f98.js",
-      "static/chunks/app/_not-found/page-563a2509b6d85edf.js"
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/page.js"
     ],
     "/layout": [
-      "static/chunks/webpack-889906d2d9470bce.js",
-      "static/chunks/fd9d1056-4e1a26e2d413ba3c.js",
-      "static/chunks/23-db261fb0c05458b3.js",
-      "static/chunks/main-app-ff123cd111801f98.js",
-      "static/css/1b0a444f12b72635.css",
-      "static/chunks/app/layout-a7cd3f25094d05c9.js"
-    ],
-    "/games/alphabet/page": [
-      "static/chunks/webpack-889906d2d9470bce.js",
-      "static/chunks/fd9d1056-4e1a26e2d413ba3c.js",
-      "static/chunks/23-db261fb0c05458b3.js",
-      "static/chunks/main-app-ff123cd111801f98.js",
-      "static/chunks/app/games/alphabet/page-9278b3aad5ee868c.js"
-    ],
-    "/games/counting/page": [
-      "static/chunks/webpack-889906d2d9470bce.js",
-      "static/chunks/fd9d1056-4e1a26e2d413ba3c.js",
-      "static/chunks/23-db261fb0c05458b3.js",
-      "static/chunks/main-app-ff123cd111801f98.js",
-      "static/chunks/app/games/counting/page-8bffb792a390690d.js"
-    ],
-    "/games/evs/page": [
-      "static/chunks/webpack-889906d2d9470bce.js",
-      "static/chunks/fd9d1056-4e1a26e2d413ba3c.js",
-      "static/chunks/23-db261fb0c05458b3.js",
-      "static/chunks/main-app-ff123cd111801f98.js",
-      "static/chunks/app/games/evs/page-3ecde12ef2002f5a.js"
-    ],
-    "/games/phonics/page": [
-      "static/chunks/webpack-889906d2d9470bce.js",
-      "static/chunks/fd9d1056-4e1a26e2d413ba3c.js",
-      "static/chunks/23-db261fb0c05458b3.js",
-      "static/chunks/main-app-ff123cd111801f98.js",
-      "static/chunks/app/games/phonics/page-0bd184b1d7dde84d.js"
-    ],
-    "/games/speakword/page": [
-      "static/chunks/webpack-889906d2d9470bce.js",
-      "static/chunks/fd9d1056-4e1a26e2d413ba3c.js",
-      "static/chunks/23-db261fb0c05458b3.js",
-      "static/chunks/main-app-ff123cd111801f98.js",
-      "static/chunks/app/games/speakword/page-b827bf77035af10b.js"
-    ],
-    "/games/tracing/page": [
-      "static/chunks/webpack-889906d2d9470bce.js",
-      "static/chunks/fd9d1056-4e1a26e2d413ba3c.js",
-      "static/chunks/23-db261fb0c05458b3.js",
-      "static/chunks/main-app-ff123cd111801f98.js",
-      "static/chunks/app/games/tracing/page-2e0e74081d2de4c0.js"
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/layout.css",
+      "static/chunks/app/layout.js"
     ],
     "/games/wordbuilder/page": [
-      "static/chunks/webpack-889906d2d9470bce.js",
-      "static/chunks/fd9d1056-4e1a26e2d413ba3c.js",
-      "static/chunks/23-db261fb0c05458b3.js",
-      "static/chunks/main-app-ff123cd111801f98.js",
-      "static/chunks/app/games/wordbuilder/page-6dbc290d23c9bd44.js"
-    ],
-    "/page": [
-      "static/chunks/webpack-889906d2d9470bce.js",
-      "static/chunks/fd9d1056-4e1a26e2d413ba3c.js",
-      "static/chunks/23-db261fb0c05458b3.js",
-      "static/chunks/main-app-ff123cd111801f98.js",
-      "static/chunks/app/page-10a349e3f5799a7c.js"
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/games/wordbuilder/page.js"
     ],
     "/games/addition/page": [
-      "static/chunks/webpack-889906d2d9470bce.js",
-      "static/chunks/fd9d1056-4e1a26e2d413ba3c.js",
-      "static/chunks/23-db261fb0c05458b3.js",
-      "static/chunks/main-app-ff123cd111801f98.js",
-      "static/chunks/app/games/addition/page-b9820b831ae36f8e.js"
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/games/addition/page.js"
+    ],
+    "/games/alphabet/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/games/alphabet/page.js"
+    ],
+    "/games/counting/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/games/counting/page.js"
     ]
   }
 }

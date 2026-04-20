@@ -6,7 +6,7 @@
   "/games/phonics/page": "app/games/phonics/page.js",
   "/games/speakword/page": "app/games/speakword/page.js",
   "/games/tracing/page": "app/games/tracing/page.js",
-  "/games/wordbuilder/page": "app/games/wordbuilder/page.js",
   "/page": "app/page.js",
-  "/games/addition/page": "app/games/addition/page.js"
+  "/games/addition/page": "app/games/addition/page.js",
+  "/games/wordbuilder/page": "app/games/wordbuilder/page.js"
 }

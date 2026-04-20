@@ -2,6 +2,7 @@
 import { useState } from "react";
 import GameShell from "@/components/GameShell";
 import ResultScreen from "@/components/ResultScreen";
+import Feedback from "@/components/Feedback";
 
 const COLOR = "#e07b39";
 const LIGHT = "#fde8d8";
@@ -51,18 +52,29 @@ export default function AlphabetGame() {
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
   const [opts] = useState(() => set.map(q => shuffle(q.options)));
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
 
   function handleTap(label: string) {
     if (selected) return;
     setSelected(label);
-    if (label === set[current].correct) setScore(s => s + 1);
-    setTimeout(() => {
-      if (current + 1 >= set.length) { setDone(true); }
-      else { setCurrent(c => c + 1); setSelected(null); }
-    }, 1200);
+    const correct = label === set[current].correct;
+    setIsCorrectAnswer(correct);
+    if (correct) setScore(s => s + 1);
+    setShowFeedback(true);
   }
 
-  function restart() { setCurrent(0); setSelected(null); setScore(0); setDone(false); }
+  function handleFeedbackComplete() {
+    setShowFeedback(false);
+    setSelected(null);
+    if (current + 1 >= set.length) {
+      setDone(true);
+    } else {
+      setCurrent(c => c + 1);
+    }
+  }
+
+  function restart() { setCurrent(0); setSelected(null); setScore(0); setDone(false); setShowFeedback(false); }
 
   if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} onReplay={restart} />;
 
@@ -89,6 +101,14 @@ export default function AlphabetGame() {
           );
         })}
       </div>
+
+      {showFeedback && (
+        <Feedback
+          isCorrect={isCorrectAnswer}
+          correctAnswer={q.correct}
+          onComplete={handleFeedbackComplete}
+        />
+      )}
     </GameShell>
   );
 }
