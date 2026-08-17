@@ -2,6 +2,7 @@
 import { useState } from "react";
 import GameShell from "@/components/GameShell";
 import ResultScreen from "@/components/ResultScreen";
+import { useClientMemo } from "@/lib/useClientMemo";
 
 const COLOR = "#8e44ad";
 const LIGHT = "#f5eeff";
@@ -42,11 +43,13 @@ const rounds = [
 function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function SpeakWordGame() {
-  const [set] = useState(() => shuffle(rounds).slice(0, 8));
+  const set = useClientMemo(() => shuffle(rounds).slice(0, 8));
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
+
+  if (!set) return null;
 
   function handleTap(label: string) {
     if (selected) return;
@@ -60,7 +63,7 @@ export default function SpeakWordGame() {
 
   function restart() { setCurrent(0); setSelected(null); setScore(0); setDone(false); }
 
-  if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} onReplay={restart} />;
+  if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} gameId="speakword" subject="english" onReplay={restart} />;
 
   const q = set[current];
   return (

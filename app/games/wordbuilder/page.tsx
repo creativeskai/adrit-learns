@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import ResultScreen from "@/components/ResultScreen";
+import { useClientMemo } from "@/lib/useClientMemo";
 
 const COLOR = "#e74c3c";
 const LIGHT = "#fdecea";
@@ -44,7 +45,7 @@ const words = [
 function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function WordBuilderGame() {
-  const [set] = useState(() => shuffle(words).slice(0, 8));
+  const set = useClientMemo(() => shuffle(words).slice(0, 8));
   const [current, setCurrent] = useState(0);
   const [placed, setPlaced] = useState<string[]>([]);
   const [letters, setLetters] = useState<string[]>([]);
@@ -59,8 +60,10 @@ export default function WordBuilderGame() {
   }
 
   useEffect(() => {
-    initLetters(set[current].word);
+    if (set) initLetters(set[current].word);
   }, [current, set]);
+
+  if (!set) return null;
 
   const q = set[current];
 
@@ -99,7 +102,7 @@ export default function WordBuilderGame() {
 
   function restart() { setCurrent(0); setScore(0); setDone(false); initLetters(set[0].word); }
 
-  if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} onReplay={restart} />;
+  if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} gameId="wordbuilder" subject="english" onReplay={restart} />;
 
   return (
     <main className="min-h-screen flex flex-col items-center p-4 pt-6"

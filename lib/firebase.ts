@@ -1,6 +1,6 @@
-import { initializeApp, getApps } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { initializeApp, getApps, FirebaseApp } from "firebase/app";
+import { getFirestore, Firestore } from "firebase/firestore";
+import { getAuth, Auth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -11,7 +11,20 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
-export const db = getFirestore(app);
-export const auth = getAuth(app);
+// No Firebase project has been created for this app yet — progress still works
+// via localStorage (see lib/progress.ts) until NEXT_PUBLIC_FIREBASE_* env vars
+// are set, at which point cloud sync turns on automatically with no code change.
+const isConfigured = Boolean(firebaseConfig.apiKey && firebaseConfig.projectId);
+
+let app: FirebaseApp | null = null;
+let db: Firestore | null = null;
+let auth: Auth | null = null;
+
+if (isConfigured) {
+  app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+  db = getFirestore(app);
+  auth = getAuth(app);
+}
+
+export { db, auth };
 export default app;

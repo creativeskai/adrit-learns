@@ -1,7 +1,6 @@
 "use client";
-import { useState } from "react";
-import GameShell from "@/components/GameShell";
-import ResultScreen from "@/components/ResultScreen";
+import McqGame, { McqRound } from "@/components/McqGame";
+import { useClientMemo } from "@/lib/useClientMemo";
 
 const COLOR = "#27ae60";
 const LIGHT = "#e8f8f0";
@@ -42,51 +41,30 @@ const rounds = [
 function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function EVSGame() {
-  const [set] = useState(() => shuffle(rounds).slice(0, 8));
-  const [opts] = useState(() => set.map(q => shuffle(q.options)));
-  const [current, setCurrent] = useState(0);
-  const [selected, setSelected] = useState<string | null>(null);
-  const [score, setScore] = useState(0);
-  const [done, setDone] = useState(false);
+  const rounds_ = useClientMemo<McqRound[]>(() =>
+    shuffle(rounds).slice(0, 8).map(r => ({
+      prompt: (
+        <div className="w-full rounded-3xl p-6 text-center"
+          style={{ background: "white", border: `2px solid ${LIGHT}` }}>
+          <p className="text-2xl font-bold" style={{ color: COLOR }}>{r.question}</p>
+        </div>
+      ),
+      speakText: r.question,
+      correct: r.correct,
+      options: shuffle(r.options).map(o => ({ label: o.l, emoji: o.e })),
+    }))
+  );
 
-  function handleTap(label: string) {
-    if (selected) return;
-    setSelected(label);
-    if (label === set[current].correct) setScore(s => s + 1);
-    setTimeout(() => {
-      if (current + 1 >= set.length) setDone(true);
-      else { setCurrent(c => c + 1); setSelected(null); }
-    }, 1200);
-  }
+  if (!rounds_) return null;
 
-  function restart() { setCurrent(0); setSelected(null); setScore(0); setDone(false); }
-
-  if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} onReplay={restart} />;
-
-  const q = set[current];
   return (
-    <GameShell title="EVS" current={current} total={set.length} score={score} color={COLOR} lightColor={LIGHT}>
-      <div className="w-full rounded-3xl p-6 text-center"
-        style={{ background: "white", border: `2px solid ${LIGHT}` }}>
-        <p className="text-2xl font-bold" style={{ color: COLOR }}>{q.question}</p>
-      </div>
-      <div className="grid grid-cols-2 gap-4">
-        {opts[current].map((opt) => {
-          const isSelected = selected === opt.l;
-          const isCorrect = opt.l === q.correct;
-          let bg = "white", border = `2px solid ${LIGHT}`;
-          if (isSelected) { bg = isCorrect ? "#d4edda" : "#f8d7da"; border = isCorrect ? "2px solid #28a745" : "2px solid #dc3545"; }
-          else if (selected && isCorrect) { bg = "#d4edda"; border = "2px solid #28a745"; }
-          return (
-            <button key={opt.l} onClick={() => handleTap(opt.l)}
-              className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl active:scale-95 transition-transform"
-              style={{ background: bg, border, minHeight: "130px" }}>
-              <span style={{ fontSize: "52px" }}>{opt.e}</span>
-              <span className="font-bold text-lg" style={{ color: COLOR }}>{opt.l}</span>
-            </button>
-          );
-        })}
-      </div>
-    </GameShell>
+    <McqGame
+      title="EVS"
+      gameId="evs"
+      subject="gk"
+      color={COLOR}
+      light={LIGHT}
+      rounds={rounds_}
+    />
   );
 }

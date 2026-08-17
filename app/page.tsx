@@ -1,17 +1,20 @@
 "use client";
-
-const games = [
-  { href: "/games/alphabet",   emoji: "🔤", label: "Letters",      sub: "A to Z recognition",    color: "#e07b39", light: "#fde8d8", ready: true },
-  { href: "/games/counting",   emoji: "🔢", label: "Counting",     sub: "Count objects 1–10",    color: "#3a7bd5", light: "#dbeeff", ready: true },
-  { href: "/games/addition",   emoji: "➕", label: "Addition",     sub: "Sums & counting",            color: "#9b59b6", light: "#f3e8ff", ready: true },
-  { href: "/games/wordbuilder",emoji: "🧩", label: "Word Builder", sub: "Spell with letters",    color: "#e74c3c", light: "#fdecea", ready: true },
-  { href: "/games/evs",        emoji: "🌿", label: "EVS",          sub: "Nature & animals",      color: "#27ae60", light: "#e8f8f0", ready: true },
-  { href: "/games/phonics",    emoji: "🔊", label: "Phonics",      sub: "Letter sounds",         color: "#f39c12", light: "#fff8e1", ready: true },
-  { href: "/games/tracing",    emoji: "✏️", label: "Tracing",      sub: "Trace A to Z",          color: "#00897b", light: "#e0f2f1", ready: true },
-  { href: "/games/speakword",  emoji: "🗣️", label: "Speak Word",   sub: "Say the word aloud",   color: "#8e44ad", light: "#f5eeff", ready: true },
-];
+import { useEffect, useState } from "react";
+import { SUBJECTS, gamesFor } from "@/lib/catalog";
+import { loadProgress, StoredProgress } from "@/lib/progress";
+import { levelForXp, xpIntoLevel, XP_PER_LEVEL, BADGES } from "@/lib/gamification";
 
 export default function Home() {
+  const [progress, setProgress] = useState<StoredProgress | null>(null);
+
+  useEffect(() => { setProgress(loadProgress()); }, []);
+
+  const xp = progress?.xp ?? 0;
+  const level = levelForXp(xp);
+  const xpInto = xpIntoLevel(xp);
+  const streak = progress?.streak ?? 0;
+  const earnedBadges = BADGES.filter(b => progress?.badges.includes(b.id));
+
   return (
     <main className="min-h-screen flex flex-col items-center p-6 pb-12"
       style={{ background: "linear-gradient(135deg, #fef9f0 0%, #fde8d8 100%)" }}>
@@ -26,25 +29,43 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          {games.map((g) => (
-            <a key={g.label} href={g.href}
-              className="flex flex-col items-center gap-2 p-5 rounded-3xl text-center transition-transform active:scale-95"
-              style={{ background: "white", border: `2px solid ${g.light}` }}>
-              <span style={{ fontSize: "44px" }}>{g.emoji}</span>
-              <span className="font-black text-lg" style={{ color: g.color }}>{g.label}</span>
-              <span style={{ fontSize: "12px", color: "#aaa" }}>{g.sub}</span>
-            </a>
-          ))}
+        <div className="rounded-3xl p-5 flex flex-col gap-3" style={{ background: "white", border: "2px solid #fde8d8" }}>
+          <div className="flex items-center justify-between">
+            <span className="font-black text-lg" style={{ color: "#e07b39" }}>Level {level}</span>
+            {streak > 0 && (
+              <span className="font-bold" style={{ color: "#e07b39" }}>🔥 {streak} day{streak > 1 ? "s" : ""}</span>
+            )}
+          </div>
+          <div style={{ background: "#fde8d8", height: "10px", borderRadius: "9999px" }}>
+            <div style={{
+              background: "#e07b39", height: "10px", borderRadius: "9999px",
+              width: `${(xpInto / XP_PER_LEVEL) * 100}%`, transition: "width 0.5s"
+            }} />
+          </div>
+          <span style={{ fontSize: "12px", color: "#aaa" }}>{xpInto} / {XP_PER_LEVEL} XP to next level</span>
+
+          {earnedBadges.length > 0 && (
+            <div className="flex flex-wrap gap-2 pt-1">
+              {earnedBadges.map(b => (
+                <span key={b.id} title={b.description}
+                  style={{ fontSize: "13px", background: "#fde8d8", color: "#e07b39", padding: "4px 10px", borderRadius: "9999px", fontWeight: 700 }}>
+                  {b.emoji} {b.name}
+                </span>
+              ))}
+            </div>
+          )}
         </div>
 
-        <div className="rounded-3xl p-5 flex items-center gap-4"
-          style={{ background: "white", border: "2px solid #fde8d8" }}>
-          <span style={{ fontSize: "36px" }}>🏆</span>
-          <div>
-            <p className="font-bold" style={{ color: "#e07b39" }}>All 8 games unlocked!</p>
-            <p style={{ fontSize: "13px", color: "#aaa" }}>Complete all games to earn your star</p>
-          </div>
+        <div className="grid grid-cols-2 gap-4">
+          {SUBJECTS.map((s) => (
+            <a key={s.id} href={`/${s.id}`}
+              className="flex flex-col items-center gap-2 p-6 rounded-3xl text-center transition-transform active:scale-95"
+              style={{ background: "white", border: `2px solid ${s.light}` }}>
+              <span style={{ fontSize: "52px" }}>{s.emoji}</span>
+              <span className="font-black text-xl" style={{ color: s.color }}>{s.label}</span>
+              <span style={{ fontSize: "12px", color: "#aaa" }}>{gamesFor(s.id).length} games</span>
+            </a>
+          ))}
         </div>
 
       </div>

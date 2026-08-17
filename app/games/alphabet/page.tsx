@@ -1,8 +1,6 @@
 "use client";
-import { useState } from "react";
-import GameShell from "@/components/GameShell";
-import ResultScreen from "@/components/ResultScreen";
-import Feedback from "@/components/Feedback";
+import McqGame, { McqRound } from "@/components/McqGame";
+import { useClientMemo } from "@/lib/useClientMemo";
 
 const COLOR = "#e07b39";
 const LIGHT = "#fde8d8";
@@ -42,73 +40,32 @@ const rounds = [
   { letter: "F", correct: "Flower",   options: [{ l: "Flower", e: "🌻" }, { l: "Flamingo", e: "🦩" }, { l: "Fox", e: "🦊" }, { l: "Frog", e: "🐸" }] },
 ];
 
-
 function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function AlphabetGame() {
-  const [set] = useState(() => shuffle(rounds).slice(0, 10));
-  const [current, setCurrent] = useState(0);
-  const [selected, setSelected] = useState<string | null>(null);
-  const [score, setScore] = useState(0);
-  const [done, setDone] = useState(false);
-  const [opts] = useState(() => set.map(q => shuffle(q.options)));
-  const [showFeedback, setShowFeedback] = useState(false);
-  const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
+  const rounds_ = useClientMemo<McqRound[]>(() =>
+    shuffle(rounds).slice(0, 10).map(r => ({
+      prompt: (
+        <div className="flex items-center justify-center mx-auto w-40 h-40 rounded-3xl text-8xl font-black"
+          style={{ background: "#ffd166", color: COLOR }}>{r.letter}</div>
+      ),
+      speakText: `Which picture starts with the letter ${r.letter}?`,
+      correct: r.correct,
+      options: shuffle(r.options).map(o => ({ label: o.l, emoji: o.e })),
+    }))
+  );
 
-  function handleTap(label: string) {
-    if (selected) return;
-    setSelected(label);
-    const correct = label === set[current].correct;
-    setIsCorrectAnswer(correct);
-    if (correct) setScore(s => s + 1);
-    setShowFeedback(true);
-  }
+  if (!rounds_) return null;
 
-  function handleFeedbackComplete() {
-    setShowFeedback(false);
-    setSelected(null);
-    if (current + 1 >= set.length) {
-      setDone(true);
-    } else {
-      setCurrent(c => c + 1);
-    }
-  }
-
-  function restart() { setCurrent(0); setSelected(null); setScore(0); setDone(false); setShowFeedback(false); }
-
-  if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} onReplay={restart} />;
-
-  const q = set[current];
   return (
-    <GameShell title="Alphabet" current={current} total={set.length} score={score} color={COLOR} lightColor={LIGHT}>
-      <p className="text-center text-xl" style={{ color: "#888" }}>Tap the picture that starts with</p>
-      <div className="flex items-center justify-center mx-auto w-40 h-40 rounded-3xl text-8xl font-black"
-        style={{ background: "#ffd166", color: COLOR }}>{q.letter}</div>
-      <div className="grid grid-cols-2 gap-4">
-        {opts[current].map((opt) => {
-          const isSelected = selected === opt.l;
-          const isCorrect = opt.l === q.correct;
-          let bg = "white", border = `2px solid ${LIGHT}`;
-          if (isSelected) { bg = isCorrect ? "#d4edda" : "#f8d7da"; border = isCorrect ? "2px solid #28a745" : "2px solid #dc3545"; }
-          else if (selected && isCorrect) { bg = "#d4edda"; border = "2px solid #28a745"; }
-          return (
-            <button key={opt.l} onClick={() => handleTap(opt.l)}
-              className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl active:scale-95 transition-transform"
-              style={{ background: bg, border, minHeight: "130px" }}>
-              <span style={{ fontSize: "52px" }}>{opt.e}</span>
-              <span className="font-bold text-lg" style={{ color: COLOR }}>{opt.l}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {showFeedback && (
-        <Feedback
-          isCorrect={isCorrectAnswer}
-          correctAnswer={q.correct}
-          onComplete={handleFeedbackComplete}
-        />
-      )}
-    </GameShell>
+    <McqGame
+      title="Alphabet"
+      gameId="alphabet"
+      subject="english"
+      color={COLOR}
+      light={LIGHT}
+      rounds={rounds_}
+      instructions="Tap the picture that starts with"
+    />
   );
 }

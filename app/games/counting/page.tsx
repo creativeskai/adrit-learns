@@ -2,6 +2,7 @@
 import { useState } from "react";
 import GameShell from "@/components/GameShell";
 import ResultScreen from "@/components/ResultScreen";
+import { useClientMemo } from "@/lib/useClientMemo";
 
 const COLOR = "#3a7bd5";
 const LIGHT = "#dbeeff";
@@ -33,12 +34,17 @@ function makeOptions(correct: number): number[] {
 function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function CountingGame() {
-  const [set] = useState(() => shuffle(allRounds).slice(0, 10));
-  const [opts] = useState(() => set.map(q => makeOptions(q.count)));
+  const data = useClientMemo(() => {
+    const set = shuffle(allRounds).slice(0, 10);
+    return { set, opts: set.map(q => makeOptions(q.count)) };
+  });
   const [current, setCurrent] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
+
+  if (!data) return null;
+  const { set, opts } = data;
 
   function handleTap(num: number) {
     if (selected !== null) return;
@@ -52,7 +58,7 @@ export default function CountingGame() {
 
   function restart() { setCurrent(0); setSelected(null); setScore(0); setDone(false); }
 
-  if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} onReplay={restart} />;
+  if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} gameId="counting" subject="maths" onReplay={restart} />;
 
   const q = set[current];
   return (

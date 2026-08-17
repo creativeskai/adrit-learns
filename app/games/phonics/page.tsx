@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import ResultScreen from "@/components/ResultScreen";
+import { useClientMemo } from "@/lib/useClientMemo";
+import { speak as ttsSpeak } from "@/lib/tts";
 
 const COLOR = "#f39c12";
 const LIGHT = "#fff8e1";
@@ -41,28 +43,28 @@ const rounds = [
 function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function PhonicsGame() {
-  const [set] = useState(() => shuffle(rounds).slice(0, 8));
+  const set = useClientMemo(() => shuffle(rounds).slice(0, 8));
   const [current, setCurrent] = useState(0);
   const [revealed, setRevealed] = useState(false);
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
   const [speaking, setSpeaking] = useState(false);
 
-  const q = set[current];
-
   function speak(text: string) {
-    if (!window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.rate = 0.8;
-    u.onstart = () => setSpeaking(true);
-    u.onend = () => setSpeaking(false);
-    window.speechSynthesis.speak(u);
+    setSpeaking(true);
+    ttsSpeak(text);
+    setTimeout(() => setSpeaking(false), 1500);
   }
 
   useEffect(() => {
+    if (!set) return;
+    const q = set[current];
     setTimeout(() => speak(`The letter ${q.letter} makes the sound... ${q.sound}`), 400);
-  }, [current]); // eslint-disable-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [current, set]);
+
+  if (!set) return null;
+  const q = set[current];
 
   function handleKnew(knew: boolean) {
     if (knew) setScore(s => s + 1);
@@ -72,7 +74,7 @@ export default function PhonicsGame() {
 
   function restart() { setCurrent(0); setScore(0); setDone(false); setRevealed(false); }
 
-  if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} onReplay={restart} />;
+  if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} gameId="phonics" subject="english" onReplay={restart} />;
 
   return (
     <main className="min-h-screen flex flex-col items-center p-4 pt-6"

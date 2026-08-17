@@ -3,6 +3,7 @@ import { useState } from "react";
 import GameShell from "@/components/GameShell";
 import ResultScreen from "@/components/ResultScreen";
 import Feedback from "@/components/Feedback";
+import { useClientMemo } from "@/lib/useClientMemo";
 
 const COLOR = "#9b59b6";
 const LIGHT = "#f3e8ff";
@@ -58,7 +59,7 @@ function Abacus({ number }: { number: number }) {
 
 export default function AdditionGame() {
   const [gameType, setGameType] = useState<'addition' | 'comparison'>('addition');
-  const [set] = useState(() => {
+  const set = useClientMemo(() => {
     const additionSet = [...additionRounds].sort(() => Math.random() - 0.5).slice(0, 8).map(r => ({ ...r, options: makeOptions(r.correct), type: 'addition' }));
     const comparisonSet = [...comparisonRounds].sort(() => Math.random() - 0.5).slice(0, 4).map(r => ({ ...r, type: 'comparison' }));
     return [...additionSet, ...comparisonSet].sort(() => Math.random() - 0.5);
@@ -69,6 +70,8 @@ export default function AdditionGame() {
   const [done, setDone] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
+
+  if (!set) return null;
 
   function handleTap(answer: string | number) {
     if (selected !== null) return;
@@ -92,7 +95,7 @@ export default function AdditionGame() {
 
   function restart() { setCurrent(0); setSelected(null); setScore(0); setDone(false); setShowFeedback(false); }
 
-  if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} onReplay={restart} />;
+  if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} gameId="addition" subject="maths" onReplay={restart} />;
 
   const q = set[current];
 

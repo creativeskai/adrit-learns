@@ -13,6 +13,13 @@ body {
   background: #fef9f0;
 }
 
+/* Tap-heavy touch UI: skip the ~300ms tap delay and the gray flash Android/iOS
+   browsers show on every button press by default. */
+button, a {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* Feedback animations */
 @keyframes float {
   0%, 100% { transform: translateY(0px) rotate(0deg); }

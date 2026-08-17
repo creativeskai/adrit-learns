@@ -1,6 +1,7 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
 import ResultScreen from "@/components/ResultScreen";
+import { useClientMemo } from "@/lib/useClientMemo";
 
 const COLOR = "#00897b";
 const LIGHT = "#e0f2f1";
@@ -49,7 +50,7 @@ const guidePoints: Record<string, {x:number,y:number}[][][]> = {
 function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function TracingGame() {
-  const [set] = useState(() => shuffle(letters).slice(0, 8));
+  const set = useClientMemo(() => shuffle(letters).slice(0, 8));
   const [current, setCurrent] = useState(0);
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
@@ -58,9 +59,10 @@ export default function TracingGame() {
   const [currentStroke, setCurrentStroke] = useState<{x:number,y:number}[]>([]);
   const [completed, setCompleted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const letter = set[current];
+  const letter = set ? set[current] : null;
 
   useEffect(() => {
+    if (!letter) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -143,6 +145,8 @@ export default function TracingGame() {
     setCurrentStroke([]);
   }
 
+  if (!set) return null;
+
   function checkLetter() {
     if (strokes.length === 0) return;
     setCompleted(true);
@@ -162,7 +166,7 @@ export default function TracingGame() {
 
   function restart() { setCurrent(0); setScore(0); setDone(false); setStrokes([]); setCurrentStroke([]); setCompleted(false); }
 
-  if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} onReplay={restart} />;
+  if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} gameId="tracing" subject="english" onReplay={restart} />;
 
   return (
     <main className="min-h-screen flex flex-col items-center p-4 pt-6"
