@@ -52,6 +52,7 @@ export const GAMES: GameMeta[] = [
   { id: "body-parts", href: "/games/body-parts", emoji: "🧍", label: "Body Parts", sub: "Know your body", subject: "gk", color: "#e67e22", light: "#fdf0e3" },
   { id: "community-helpers", href: "/games/community-helpers", emoji: "👮", label: "Helpers", sub: "Community helpers", subject: "gk", color: "#2980b9", light: "#e3f2fd" },
   { id: "seasons", href: "/games/seasons", emoji: "🌦️", label: "Seasons", sub: "Summer, rainy & winter", subject: "gk", color: "#16a085", light: "#e0f7f2" },
+  { id: "safety", href: "/games/safety", emoji: "🦺", label: "Safety", sub: "Good habits & staying safe", subject: "gk", color: "#e74c3c", light: "#fdecea" },
 ];
 
 export function gamesFor(subject: Subject): GameMeta[] {
