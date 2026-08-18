@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { Volume2 } from "lucide-react";
 import { speak, speakSequence, SpeechLang } from "@/lib/tts";
 
 type Props = {
@@ -21,7 +22,7 @@ export default function SpeakButton({ text, lang = "en-IN", color, size = "sm" }
     setTimeout(() => setSpeaking(false), 1200);
   }
 
-  const dim = size === "lg" ? "56px" : "40px";
+  const dim = size === "lg" ? 56 : 40;
   return (
     <button
       onClick={handleTap}
@@ -32,11 +33,10 @@ export default function SpeakButton({ text, lang = "en-IN", color, size = "sm" }
         background: speaking ? color : "white",
         border: `2px solid ${color}`,
         color: speaking ? "white" : color,
-        fontSize: size === "lg" ? "26px" : "18px",
         flexShrink: 0,
       }}
     >
-      🔊
+      <Volume2 size={dim * 0.5} strokeWidth={2.5} />
     </button>
   );
 }

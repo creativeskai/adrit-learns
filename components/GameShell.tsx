@@ -1,6 +1,7 @@
 "use client";
 import { ReactNode } from "react";
 import Link from "next/link";
+import { ArrowLeft, Star } from "lucide-react";
 import { Subject } from "@/lib/catalog";
 
 type Props = {
@@ -20,9 +21,13 @@ export default function GameShell({ title, current, total, score, color, lightCo
       style={{ background: `linear-gradient(135deg, #fefefe 0%, ${lightColor} 100%)` }}>
       <div className="w-full max-w-lg flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <Link href={`/${subject}`} style={{ color, fontSize: "15px", fontWeight: 600 }}>← Back</Link>
+          <Link href={`/${subject}`} className="flex items-center gap-1" style={{ color, fontSize: "15px", fontWeight: 600 }}>
+            <ArrowLeft size={16} strokeWidth={2.5} /> Back
+          </Link>
           <span className="font-bold text-lg" style={{ color }}>{title}</span>
-          <span style={{ color, fontSize: "15px", fontWeight: 600 }}>⭐ {score}</span>
+          <span className="flex items-center gap-1" style={{ color, fontSize: "15px", fontWeight: 600 }}>
+            <Star size={16} fill={color} strokeWidth={0} /> {score}
+          </span>
         </div>
         <div style={{ background: lightColor, height: "10px", borderRadius: "9999px" }}>
           <div style={{

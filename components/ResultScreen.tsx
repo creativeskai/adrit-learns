@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { Home, RotateCcw, Trophy, Star, ThumbsUp } from "lucide-react";
 import { saveGameCompletion, CompletionResult } from "@/lib/progress";
 import { Subject } from "@/lib/catalog";
 
@@ -17,7 +18,7 @@ type Props = {
 
 export default function ResultScreen({ score, total, color, lightColor, name = "Adrit", gameId, subject, onReplay }: Props) {
   const pct = Math.round((score / total) * 100);
-  const emoji = pct >= 80 ? "🏆" : pct >= 60 ? "🌟" : "💪";
+  const MoodIcon = pct >= 80 ? Trophy : pct >= 60 ? Star : ThumbsUp;
   const message = pct >= 80 ? "Excellent!" : pct >= 60 ? "Well done!" : "Keep practising!";
   const [completion, setCompletion] = useState<CompletionResult | null>(null);
   const saved = useRef(false);
@@ -37,7 +38,7 @@ export default function ResultScreen({ score, total, color, lightColor, name = "
     <main className="min-h-screen flex flex-col items-center justify-center p-8"
       style={{ background: `linear-gradient(135deg, #fefefe 0%, ${lightColor} 100%)` }}>
       <div className="flex flex-col items-center gap-6 w-full max-w-md text-center">
-        <div style={{ fontSize: "clamp(56px, 16vw, 96px)" }}>{emoji}</div>
+        <MoodIcon size={80} color={color} fill={color} strokeWidth={1} />
         <h1 className="text-4xl font-bold" style={{ color }}>{message}</h1>
         <p className="text-xl" style={{ color: "#666" }}>
           {name} scored <strong>{score}</strong> out of <strong>{total}</strong>
@@ -71,14 +72,14 @@ export default function ResultScreen({ score, total, color, lightColor, name = "
           </div>
         )}
         <button onClick={onReplay}
-          className="w-full py-5 rounded-3xl text-white text-xl font-bold active:scale-95 transition-transform"
+          className="w-full py-5 rounded-3xl text-white text-xl font-bold active:scale-95 transition-transform flex items-center justify-center gap-2"
           style={{ background: color }}>
-          Play Again 🔁
+          <RotateCcw size={22} strokeWidth={2.5} /> Play Again
         </button>
         <Link href="/"
-          className="w-full py-5 rounded-3xl text-xl font-bold text-center block active:scale-95 transition-transform"
+          className="w-full py-5 rounded-3xl text-xl font-bold text-center flex items-center justify-center gap-2 active:scale-95 transition-transform"
           style={{ background: "white", color, border: `2px solid ${color}` }}>
-          Back Home 🏠
+          <Home size={22} strokeWidth={2.5} /> Back Home
         </Link>
       </div>
     </main>

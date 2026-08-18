@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import { ArrowLeft, Star } from "lucide-react";
 import ResultScreen from "@/components/ResultScreen";
 import SpeakButton from "@/components/SpeakButton";
 import { playCorrectSound, playWrongSound } from "@/lib/sounds";
@@ -65,9 +66,13 @@ export default function FillBlankGame({ title, gameId, subject, color, light, ro
       style={{ background: `linear-gradient(135deg, #fefefe 0%, ${light} 100%)` }}>
       <div className="w-full max-w-lg flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <Link href={`/${subject}`} style={{ color, fontSize: "15px", fontWeight: 600 }}>← Back</Link>
+          <Link href={`/${subject}`} className="flex items-center gap-1" style={{ color, fontSize: "15px", fontWeight: 600 }}>
+            <ArrowLeft size={16} strokeWidth={2.5} /> Back
+          </Link>
           <span className="font-bold text-lg" style={{ color }}>{title}</span>
-          <span style={{ color, fontSize: "15px", fontWeight: 600 }}>⭐ {score}</span>
+          <span className="flex items-center gap-1" style={{ color, fontSize: "15px", fontWeight: 600 }}>
+            <Star size={16} fill={color} strokeWidth={0} /> {score}
+          </span>
         </div>
         <div style={{ background: light, height: "10px", borderRadius: "9999px" }}>
           <div style={{
