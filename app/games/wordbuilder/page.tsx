@@ -1,6 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
+import GameShell from "@/components/GameShell";
 import ResultScreen from "@/components/ResultScreen";
+import SpeakButton from "@/components/SpeakButton";
+import { speak } from "@/lib/tts";
+import { useAutoSpeak } from "@/lib/useAutoSpeak";
 import { useClientMemo } from "@/lib/useClientMemo";
 
 const COLOR = "#e74c3c";
@@ -63,12 +67,17 @@ export default function WordBuilderGame() {
     if (set) initLetters(set[current].word);
   }, [current, set]);
 
+  // A child who can't read yet needs the hint read aloud, not just shown as
+  // text under the picture.
+  useAutoSpeak([set?.[current]?.hint], "en-IN", current, !!set);
+
   if (!set) return null;
 
   const q = set[current];
 
   function tapLetter(i: number) {
     if (placed.length >= q.word.length) return;
+    speak(letters[i], "en-IN");
     const newPlaced = [...placed, letters[i]];
     const newLetters = letters.filter((_, idx) => idx !== i);
     setPlaced(newPlaced);
@@ -105,53 +114,44 @@ export default function WordBuilderGame() {
   if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} gameId="wordbuilder" subject="english" onReplay={restart} />;
 
   return (
-    <main className="min-h-screen flex flex-col items-center p-4 pt-6"
-      style={{ background: `linear-gradient(135deg, #fefefe 0%, ${LIGHT} 100%)` }}>
-      <div className="w-full max-w-lg flex flex-col gap-4">
-        <div className="flex justify-between items-center">
-          <a href="/" style={{ color: COLOR, fontSize: "15px", fontWeight: 600 }}>← Home</a>
-          <span className="font-bold text-lg" style={{ color: COLOR }}>Word Builder</span>
-          <span style={{ color: COLOR, fontSize: "15px", fontWeight: 600 }}>⭐ {score}</span>
-        </div>
-        <div style={{ background: LIGHT, height: "10px", borderRadius: "9999px" }}>
-          <div style={{ background: COLOR, height: "10px", borderRadius: "9999px", width: `${(current / set.length) * 100}%`, transition: "width 0.5s" }} />
-        </div>
-
-        <div className="flex flex-col items-center gap-2 p-6 rounded-3xl"
-          style={{ background: "white", border: `2px solid ${LIGHT}` }}>
-          <span style={{ fontSize: "72px" }}>{q.emoji}</span>
+    <GameShell title="Word Builder" current={current} total={set.length} score={score} color={COLOR} lightColor={LIGHT} subject="english">
+      <div className="flex flex-col items-center gap-2 p-6 rounded-3xl"
+        style={{ background: "white", border: `2px solid ${LIGHT}` }}>
+        <span style={{ fontSize: "72px" }}>{q.emoji}</span>
+        <div className="flex items-center justify-center gap-2">
           <p style={{ color: "#aaa", fontSize: "14px" }}>{q.hint}</p>
+          <SpeakButton text={q.hint} lang="en-IN" color={COLOR} />
         </div>
-
-        <div className="flex gap-3 justify-center">
-          {Array.from({ length: q.word.length }).map((_, i) => (
-            <div key={i} className="flex items-center justify-center w-16 h-16 rounded-2xl text-3xl font-black"
-              style={{
-                background: placed[i] ? (wrong ? "#f8d7da" : "#d4edda") : "white",
-                border: `2px solid ${placed[i] ? (wrong ? "#dc3545" : "#28a745") : LIGHT}`,
-                color: COLOR
-              }}>
-              {placed[i] || ""}
-            </div>
-          ))}
-        </div>
-
-        <div className="flex flex-wrap gap-3 justify-center py-4">
-          {letters.map((l, i) => (
-            <button key={i} onClick={() => tapLetter(i)}
-              className="w-14 h-14 rounded-2xl text-2xl font-black active:scale-95 transition-transform"
-              style={{ background: COLOR, color: "white", border: "none" }}>
-              {l}
-            </button>
-          ))}
-        </div>
-
-        <button onClick={removeLast}
-          className="w-full py-3 rounded-2xl text-lg font-semibold active:scale-95 transition-transform"
-          style={{ background: "white", color: COLOR, border: `2px solid ${COLOR}` }}>
-          ← Remove last
-        </button>
       </div>
-    </main>
+
+      <div className="flex gap-3 justify-center">
+        {Array.from({ length: q.word.length }).map((_, i) => (
+          <div key={i} className="flex items-center justify-center w-16 h-16 rounded-2xl text-3xl font-black"
+            style={{
+              background: placed[i] ? (wrong ? "#f8d7da" : "#d4edda") : "white",
+              border: `2px solid ${placed[i] ? (wrong ? "#dc3545" : "#28a745") : LIGHT}`,
+              color: COLOR
+            }}>
+            {placed[i] || ""}
+          </div>
+        ))}
+      </div>
+
+      <div className="flex flex-wrap gap-3 justify-center py-4">
+        {letters.map((l, i) => (
+          <button key={i} onClick={() => tapLetter(i)}
+            className="w-14 h-14 rounded-2xl text-2xl font-black active:scale-95 transition-transform"
+            style={{ background: COLOR, color: "white", border: "none" }}>
+            {l}
+          </button>
+        ))}
+      </div>
+
+      <button onClick={removeLast}
+        className="w-full py-3 rounded-2xl text-lg font-semibold active:scale-95 transition-transform"
+        style={{ background: "white", color: COLOR, border: `2px solid ${COLOR}` }}>
+        ← Remove last
+      </button>
+    </GameShell>
   );
 }

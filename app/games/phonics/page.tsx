@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import GameShell from "@/components/GameShell";
 import ResultScreen from "@/components/ResultScreen";
 import { useClientMemo } from "@/lib/useClientMemo";
 import { speak as ttsSpeak } from "@/lib/tts";
@@ -77,57 +78,45 @@ export default function PhonicsGame() {
   if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} gameId="phonics" subject="english" onReplay={restart} />;
 
   return (
-    <main className="min-h-screen flex flex-col items-center p-4 pt-6"
-      style={{ background: `linear-gradient(135deg, #fefefe 0%, ${LIGHT} 100%)` }}>
-      <div className="w-full max-w-lg flex flex-col gap-4">
-        <div className="flex justify-between items-center">
-          <a href="/" style={{ color: COLOR, fontSize: "15px", fontWeight: 600 }}>← Home</a>
-          <span className="font-bold text-lg" style={{ color: COLOR }}>Phonics</span>
-          <span style={{ color: COLOR, fontSize: "15px", fontWeight: 600 }}>⭐ {score}</span>
-        </div>
-        <div style={{ background: LIGHT, height: "10px", borderRadius: "9999px" }}>
-          <div style={{ background: COLOR, height: "10px", borderRadius: "9999px", width: `${(current / set.length) * 100}%`, transition: "width 0.5s" }} />
-        </div>
-
-        <div className="flex flex-col items-center gap-4 p-8 rounded-3xl"
-          style={{ background: "white", border: `2px solid ${LIGHT}` }}>
-          <div className="w-36 h-36 flex items-center justify-center rounded-3xl text-9xl font-black"
-            style={{ background: LIGHT, color: COLOR }}>{q.letter}</div>
-          <p style={{ color: "#aaa", fontSize: "15px" }}>Tap to hear the sound</p>
-          <button onClick={() => speak(q.sound)}
-            className="flex items-center gap-2 px-6 py-3 rounded-full text-white font-bold active:scale-95 transition-transform"
-            style={{ background: speaking ? "#aaa" : COLOR, fontSize: "18px" }}>
-            {speaking ? "🔊 Speaking..." : "🔊 Hear Sound"}
-          </button>
-        </div>
-
-        {!revealed ? (
-          <button onClick={() => setRevealed(true)}
-            className="w-full py-5 rounded-3xl text-white text-xl font-bold active:scale-95 transition-transform"
-            style={{ background: COLOR }}>
-            Show Example Word
-          </button>
-        ) : (
-          <div className="flex flex-col items-center gap-4 p-6 rounded-3xl"
-            style={{ background: "white", border: `2px solid ${LIGHT}` }}>
-            <span style={{ fontSize: "64px" }}>{q.emoji}</span>
-            <p className="text-3xl font-black" style={{ color: COLOR }}>{q.word}</p>
-            <p style={{ color: "#aaa" }}>Did you know this sound?</p>
-            <div className="flex gap-4 w-full">
-              <button onClick={() => handleKnew(true)}
-                className="flex-1 py-4 rounded-2xl text-white text-xl font-bold active:scale-95 transition-transform"
-                style={{ background: "#28a745" }}>
-                Yes! ✓
-              </button>
-              <button onClick={() => handleKnew(false)}
-                className="flex-1 py-4 rounded-2xl text-white text-xl font-bold active:scale-95 transition-transform"
-                style={{ background: "#dc3545" }}>
-                Not yet ✗
-              </button>
-            </div>
-          </div>
-        )}
+    <GameShell title="Phonics" current={current} total={set.length} score={score} color={COLOR} lightColor={LIGHT} subject="english">
+      <div className="flex flex-col items-center gap-4 p-8 rounded-3xl"
+        style={{ background: "white", border: `2px solid ${LIGHT}` }}>
+        <div className="w-36 h-36 flex items-center justify-center rounded-3xl text-9xl font-black"
+          style={{ background: LIGHT, color: COLOR }}>{q.letter}</div>
+        <p style={{ color: "#aaa", fontSize: "15px" }}>Tap to hear the sound</p>
+        <button onClick={() => speak(q.sound)}
+          className="flex items-center gap-2 px-6 py-3 rounded-full text-white font-bold active:scale-95 transition-transform"
+          style={{ background: speaking ? "#aaa" : COLOR, fontSize: "18px" }}>
+          {speaking ? "🔊 Speaking..." : "🔊 Hear Sound"}
+        </button>
       </div>
-    </main>
+
+      {!revealed ? (
+        <button onClick={() => setRevealed(true)}
+          className="w-full py-5 rounded-3xl text-white text-xl font-bold active:scale-95 transition-transform"
+          style={{ background: COLOR }}>
+          Show Example Word
+        </button>
+      ) : (
+        <div className="flex flex-col items-center gap-4 p-6 rounded-3xl"
+          style={{ background: "white", border: `2px solid ${LIGHT}` }}>
+          <span style={{ fontSize: "64px" }}>{q.emoji}</span>
+          <p className="text-3xl font-black" style={{ color: COLOR }}>{q.word}</p>
+          <p style={{ color: "#aaa" }}>Did you know this sound?</p>
+          <div className="flex gap-4 w-full">
+            <button onClick={() => handleKnew(true)}
+              className="flex-1 py-4 rounded-2xl text-white text-xl font-bold active:scale-95 transition-transform"
+              style={{ background: "#28a745" }}>
+              Yes! ✓
+            </button>
+            <button onClick={() => handleKnew(false)}
+              className="flex-1 py-4 rounded-2xl text-white text-xl font-bold active:scale-95 transition-transform"
+              style={{ background: "#dc3545" }}>
+              Not yet ✗
+            </button>
+          </div>
+        </div>
+      )}
+    </GameShell>
   );
 }

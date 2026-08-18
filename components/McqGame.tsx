@@ -6,8 +6,12 @@ import Feedback from "@/components/Feedback";
 import SpeakButton from "@/components/SpeakButton";
 import { Subject } from "@/lib/catalog";
 import { SpeechLang } from "@/lib/tts";
+import { useAutoSpeak } from "@/lib/useAutoSpeak";
 
-export type McqOption = { label: string; emoji?: string };
+// `visual` lets an option show a drawn/custom shape instead of a plain emoji
+// character - needed for games (like Shapes) where the answer itself has no
+// good emoji, so a non-reader would otherwise have nothing but text to go on.
+export type McqOption = { label: string; emoji?: string; visual?: ReactNode };
 export type McqRound = { prompt: ReactNode; speakText?: string; correct: string; options: McqOption[] };
 
 type Props = {
@@ -28,6 +32,9 @@ export default function McqGame({ title, gameId, subject, color, light, rounds, 
   const [done, setDone] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
+
+  const speakParts = [instructions, rounds[current]?.speakText, ...rounds[current]?.options.map(o => o.label) ?? []];
+  useAutoSpeak(speakParts, lang, current, !done);
 
   function handleTap(label: string) {
     if (selected !== null) return;
@@ -59,13 +66,11 @@ export default function McqGame({ title, gameId, subject, color, light, rounds, 
   const q = rounds[current];
 
   return (
-    <GameShell title={title} current={current} total={rounds.length} score={score} color={color} lightColor={light}>
-      {(instructions || q.speakText) && (
-        <div className="flex items-center justify-center gap-2">
-          {instructions && <p className="text-center text-xl" style={{ color: "#888" }}>{instructions}</p>}
-          {q.speakText && <SpeakButton text={q.speakText} lang={lang} color={color} />}
-        </div>
-      )}
+    <GameShell title={title} current={current} total={rounds.length} score={score} color={color} lightColor={light} subject={subject}>
+      <div className="flex items-center justify-center gap-2">
+        {instructions && <p className="text-center text-xl" style={{ color: "#888" }}>{instructions}</p>}
+        <SpeakButton text={speakParts} lang={lang} color={color} />
+      </div>
       {q.prompt}
       <div className="grid grid-cols-2 gap-4">
         {q.options.map((opt) => {
@@ -78,7 +83,7 @@ export default function McqGame({ title, gameId, subject, color, light, rounds, 
             <button key={opt.label} onClick={() => handleTap(opt.label)}
               className="flex flex-col items-center justify-center gap-2 p-4 rounded-2xl active:scale-95 transition-transform"
               style={{ background: bg, border, minHeight: "130px" }}>
-              {opt.emoji && <span style={{ fontSize: "52px" }}>{opt.emoji}</span>}
+              {opt.visual ?? (opt.emoji && <span style={{ fontSize: "52px" }}>{opt.emoji}</span>)}
               <span className="font-bold text-lg" style={{ color: textColor }}>{opt.label}</span>
             </button>
           );

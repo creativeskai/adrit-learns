@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import TtsWarmup from "@/components/TtsWarmup";
+import AuthGate from "@/components/AuthGate";
 
 export const metadata: Metadata = {
   title: "Adrit Learns",
@@ -13,7 +15,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <TtsWarmup />
+        <AuthGate>{children}</AuthGate>
+      </body>
     </html>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { SUBJECTS, gamesFor } from "@/lib/catalog";
 import { loadProgress, StoredProgress } from "@/lib/progress";
 import { levelForXp, xpIntoLevel, XP_PER_LEVEL, BADGES } from "@/lib/gamification";
@@ -58,13 +59,13 @@ export default function Home() {
 
         <div className="grid grid-cols-2 gap-4">
           {SUBJECTS.map((s) => (
-            <a key={s.id} href={`/${s.id}`}
+            <Link key={s.id} href={`/${s.id}`}
               className="flex flex-col items-center gap-2 p-6 rounded-3xl text-center transition-transform active:scale-95"
               style={{ background: "white", border: `2px solid ${s.light}` }}>
               <span style={{ fontSize: "52px" }}>{s.emoji}</span>
               <span className="font-black text-xl" style={{ color: s.color }}>{s.label}</span>
               <span style={{ fontSize: "12px", color: "#aaa" }}>{gamesFor(s.id).length} games</span>
-            </a>
+            </Link>
           ))}
         </div>
 

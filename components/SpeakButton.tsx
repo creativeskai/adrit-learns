@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
-import { speak, SpeechLang } from "@/lib/tts";
+import { speak, speakSequence, SpeechLang } from "@/lib/tts";
 
 type Props = {
-  text: string;
+  text: string | string[];
   lang?: SpeechLang;
   color: string;
   size?: "sm" | "lg";
@@ -14,7 +14,8 @@ export default function SpeakButton({ text, lang = "en-IN", color, size = "sm" }
 
   function handleTap() {
     setSpeaking(true);
-    speak(text, lang);
+    if (Array.isArray(text)) speakSequence(text, lang);
+    else speak(text, lang);
     // speechSynthesis has no reliable onend hook across all tablet browsers when
     // triggered this way, so just show the "speaking" pulse briefly.
     setTimeout(() => setSpeaking(false), 1200);

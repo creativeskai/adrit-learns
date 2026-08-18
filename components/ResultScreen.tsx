@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { saveGameCompletion, CompletionResult } from "@/lib/progress";
 import { Subject } from "@/lib/catalog";
 
@@ -19,8 +20,14 @@ export default function ResultScreen({ score, total, color, lightColor, name = "
   const emoji = pct >= 80 ? "🏆" : pct >= 60 ? "🌟" : "💪";
   const message = pct >= 80 ? "Excellent!" : pct >= 60 ? "Well done!" : "Keep practising!";
   const [completion, setCompletion] = useState<CompletionResult | null>(null);
+  const saved = useRef(false);
 
   useEffect(() => {
+    // React 18 Strict Mode intentionally double-invokes mount effects in dev
+    // to surface exactly this kind of bug: without this guard, saving twice
+    // would award XP twice and log two attempts for one completed game.
+    if (saved.current) return;
+    saved.current = true;
     setCompletion(saveGameCompletion(gameId, subject, score, total));
     // Runs once per result screen mount — completion is intentionally not in deps.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,11 +75,11 @@ export default function ResultScreen({ score, total, color, lightColor, name = "
           style={{ background: color }}>
           Play Again 🔁
         </button>
-        <a href="/"
+        <Link href="/"
           className="w-full py-5 rounded-3xl text-xl font-bold text-center block active:scale-95 transition-transform"
           style={{ background: "white", color, border: `2px solid ${color}` }}>
           Back Home 🏠
-        </a>
+        </Link>
       </div>
     </main>
   );

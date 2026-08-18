@@ -36,6 +36,17 @@ const rounds = [
   { question: "Which animal gives wool?", correct: "Sheep", options: [{ l: "Sheep", e: "🐑" }, { l: "Lion", e: "🦁" }, { l: "Fish", e: "🐟" }, { l: "Duck", e: "🦆" }] },
   { question: "Which one moves fast?", correct: "Cheetah", options: [{ l: "Cheetah", e: "🐆" }, { l: "Turtle", e: "🐢" }, { l: "Sloth", e: "🦥" }, { l: "Snail", e: "🐌" }] },
   { question: "Which is a musical instrument?", correct: "Guitar", options: [{ l: "Guitar", e: "🎸" }, { l: "Plate", e: "🍽️" }, { l: "Cup", e: "🥤" }, { l: "Book", e: "📚" }] },
+  // CBSE UKG EVS/GK: Family topic.
+  { question: "Who is your mother's mother?", correct: "Grandmother", options: [{ l: "Grandmother", e: "👵" }, { l: "Grandfather", e: "👴" }, { l: "Mother", e: "👩" }, { l: "Sister", e: "👧" }] },
+  { question: "Who is your father's father?", correct: "Grandfather", options: [{ l: "Grandfather", e: "👴" }, { l: "Grandmother", e: "👵" }, { l: "Father", e: "👨" }, { l: "Brother", e: "👦" }] },
+  { question: "Who is the girl child in a family?", correct: "Sister", options: [{ l: "Sister", e: "👧" }, { l: "Brother", e: "👦" }, { l: "Mother", e: "👩" }, { l: "Grandmother", e: "👵" }] },
+  { question: "Who is the boy child in a family?", correct: "Brother", options: [{ l: "Brother", e: "👦" }, { l: "Sister", e: "👧" }, { l: "Father", e: "👨" }, { l: "Grandfather", e: "👴" }] },
+  { question: "Who is the youngest, and cannot walk or talk yet?", correct: "Baby", options: [{ l: "Baby", e: "👶" }, { l: "Mother", e: "👩" }, { l: "Father", e: "👨" }, { l: "Sister", e: "👧" }] },
+  // CBSE UKG EVS/GK: Domestic vs Wild animals.
+  { question: "Which animal is wild and lives in the forest?", correct: "Lion", options: [{ l: "Lion", e: "🦁" }, { l: "Cow", e: "🐄" }, { l: "Dog", e: "🐶" }, { l: "Hen", e: "🐔" }] },
+  { question: "Which animal is a pet that lives with us at home?", correct: "Dog", options: [{ l: "Dog", e: "🐶" }, { l: "Tiger", e: "🐯" }, { l: "Elephant", e: "🐘" }, { l: "Bear", e: "🐻" }] },
+  { question: "Which animal is wild, lives in water, and has sharp teeth?", correct: "Crocodile", options: [{ l: "Crocodile", e: "🐊" }, { l: "Fish", e: "🐟" }, { l: "Duck", e: "🦆" }, { l: "Frog", e: "🐸" }] },
+  { question: "Which animal is a farm animal that pulls carts?", correct: "Horse", options: [{ l: "Horse", e: "🐴" }, { l: "Wolf", e: "🐺" }, { l: "Lion", e: "🦁" }, { l: "Tiger", e: "🐯" }] },
 ];
 
 function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }

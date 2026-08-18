@@ -35,10 +35,13 @@ export const GAMES: GameMeta[] = [
 
   { id: "counting", href: "/games/counting", emoji: "🔢", label: "Counting", sub: "Count objects 1–10", subject: "maths", color: "#3a7bd5", light: "#dbeeff" },
   { id: "addition", href: "/games/addition", emoji: "➕", label: "Addition", sub: "Sums & counting", subject: "maths", color: "#9b59b6", light: "#f3e8ff" },
+  { id: "subtraction", href: "/games/subtraction", emoji: "➖", label: "Subtraction", sub: "Take away & count", subject: "maths", color: "#c0392b", light: "#fdecea" },
   { id: "shapes", href: "/games/shapes", emoji: "🔺", label: "Shapes", sub: "Circles, squares & more", subject: "maths", color: "#2c3e50", light: "#eaecee" },
 
-  { id: "evs", href: "/games/evs", emoji: "🌿", label: "EVS Mix", sub: "Nature & animals", subject: "gk", color: "#27ae60", light: "#e8f8f0" },
+  { id: "evs", href: "/games/evs", emoji: "🌿", label: "EVS Mix", sub: "Nature, animals & family", subject: "gk", color: "#27ae60", light: "#e8f8f0" },
   { id: "body-parts", href: "/games/body-parts", emoji: "🧍", label: "Body Parts", sub: "Know your body", subject: "gk", color: "#e67e22", light: "#fdf0e3" },
+  { id: "community-helpers", href: "/games/community-helpers", emoji: "👮", label: "Helpers", sub: "Community helpers", subject: "gk", color: "#2980b9", light: "#e3f2fd" },
+  { id: "seasons", href: "/games/seasons", emoji: "🌦️", label: "Seasons", sub: "Summer, rainy & winter", subject: "gk", color: "#16a085", light: "#e0f7f2" },
 ];
 
 export function gamesFor(subject: Subject): GameMeta[] {

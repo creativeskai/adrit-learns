@@ -1,9 +1,11 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import ResultScreen from "@/components/ResultScreen";
 import SpeakButton from "@/components/SpeakButton";
 import { playCorrectSound, playWrongSound } from "@/lib/sounds";
 import { speak, SpeechLang } from "@/lib/tts";
+import { useAutoSpeak } from "@/lib/useAutoSpeak";
 import { Subject } from "@/lib/catalog";
 
 // `template` marks the blank with "___", e.g. "C___T" or "The sun is ___".
@@ -27,6 +29,8 @@ export default function FillBlankGame({ title, gameId, subject, color, light, ro
 
   const q = rounds[current];
   const [before, after] = q.template.split("___");
+  const speakParts = [q.speakText, ...q.options];
+  useAutoSpeak(speakParts, lang, current, !done);
 
   function handleTap(opt: string) {
     if (selected !== null) return;
@@ -61,7 +65,7 @@ export default function FillBlankGame({ title, gameId, subject, color, light, ro
       style={{ background: `linear-gradient(135deg, #fefefe 0%, ${light} 100%)` }}>
       <div className="w-full max-w-lg flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <a href="/" style={{ color, fontSize: "15px", fontWeight: 600 }}>← Home</a>
+          <Link href={`/${subject}`} style={{ color, fontSize: "15px", fontWeight: 600 }}>← Back</Link>
           <span className="font-bold text-lg" style={{ color }}>{title}</span>
           <span style={{ color, fontSize: "15px", fontWeight: 600 }}>⭐ {score}</span>
         </div>
@@ -87,7 +91,7 @@ export default function FillBlankGame({ title, gameId, subject, color, light, ro
             </span>
             {after && <span className="text-3xl font-black" style={{ color }}>{after}</span>}
           </div>
-          {q.speakText && <SpeakButton text={q.speakText} lang={lang} color={color} />}
+          <SpeakButton text={speakParts} lang={lang} color={color} />
         </div>
 
         <div className="flex flex-wrap gap-4 justify-center">

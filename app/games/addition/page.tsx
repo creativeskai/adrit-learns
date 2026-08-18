@@ -3,10 +3,24 @@ import { useState } from "react";
 import GameShell from "@/components/GameShell";
 import ResultScreen from "@/components/ResultScreen";
 import Feedback from "@/components/Feedback";
+import SpeakButton from "@/components/SpeakButton";
+import Abacus from "@/components/Abacus";
+import { useAutoSpeak } from "@/lib/useAutoSpeak";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { makeAdditionOptions } from "@/lib/mcqOptions";
 
 const COLOR = "#9b59b6";
 const LIGHT = "#f3e8ff";
+
+type AdditionRound = { type: "addition"; a: number; b: number; correct: number; options: number[] };
+type ComparisonRound = {
+  type: "comparison";
+  question: string;
+  left: { count: number; emoji: string };
+  right: { count: number; emoji: string };
+  correct: "left" | "right";
+};
+type Round = AdditionRound | ComparisonRound;
 
 const additionRounds = [
   { a: 1, b: 1, correct: 2 }, { a: 1, b: 2, correct: 3 }, { a: 1, b: 3, correct: 4 }, { a: 1, b: 4, correct: 5 },
@@ -20,7 +34,7 @@ const additionRounds = [
   { a: 6, b: 3, correct: 9 }, { a: 7, b: 1, correct: 8 }, { a: 7, b: 2, correct: 9 }, { a: 8, b: 1, correct: 9 },
 ];
 
-const comparisonRounds = [
+const comparisonRounds: Omit<ComparisonRound, "type">[] = [
   { question: "Which has more?", left: { count: 3, emoji: "🍎" }, right: { count: 5, emoji: "🍌" }, correct: "right" },
   { question: "Which has more?", left: { count: 4, emoji: "⭐" }, right: { count: 2, emoji: "🌙" }, correct: "left" },
   { question: "Which has less?", left: { count: 6, emoji: "🐱" }, right: { count: 8, emoji: "🐶" }, correct: "left" },
@@ -31,37 +45,16 @@ const comparisonRounds = [
   { question: "Which has less?", left: { count: 4, emoji: "🦋" }, right: { count: 7, emoji: "🐝" }, correct: "left" },
 ];
 
-function makeOptions(correct: number) {
-  const opts = new Set([correct]);
-  while (opts.size < 4) {
-    opts.add(Math.max(1, correct + Math.floor(Math.random() * 7) - 3));
-  }
-  return Array.from(opts).sort(() => Math.random() - 0.5);
-}
-
-function Abacus({ number }: { number: number }) {
-  return (
-    <div className="abacus">
-      <div className="abacus-row">
-        <div className="abacus-rod">
-          {[...Array(10)].map((_, i) => (
-            <div
-              key={i}
-              className={`abacus-bead ${i < number ? 'active' : ''}`}
-              style={{ top: `${8 + i * 10}px` }}
-            />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+const makeOptions = makeAdditionOptions;
 
 export default function AdditionGame() {
-  const [gameType, setGameType] = useState<'addition' | 'comparison'>('addition');
-  const set = useClientMemo(() => {
-    const additionSet = [...additionRounds].sort(() => Math.random() - 0.5).slice(0, 8).map(r => ({ ...r, options: makeOptions(r.correct), type: 'addition' }));
-    const comparisonSet = [...comparisonRounds].sort(() => Math.random() - 0.5).slice(0, 4).map(r => ({ ...r, type: 'comparison' }));
+  const set = useClientMemo<Round[]>(() => {
+    const additionSet: AdditionRound[] = [...additionRounds]
+      .sort(() => Math.random() - 0.5).slice(0, 8)
+      .map(r => ({ ...r, options: makeOptions(r.correct), type: "addition" as const }));
+    const comparisonSet: ComparisonRound[] = [...comparisonRounds]
+      .sort(() => Math.random() - 0.5).slice(0, 4)
+      .map(r => ({ ...r, type: "comparison" as const }));
     return [...additionSet, ...comparisonSet].sort(() => Math.random() - 0.5);
   });
   const [current, setCurrent] = useState(0);
@@ -71,13 +64,20 @@ export default function AdditionGame() {
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
 
+  const round = set?.[current];
+  const speakParts = !round ? [] : round.type === "addition"
+    ? [`What is ${round.a} plus ${round.b}?`, ...round.options.map(String)]
+    : [round.question, `Left side, ${round.left.count}`, `Right side, ${round.right.count}`];
+
+  useAutoSpeak(speakParts, "en-IN", current, !!round && !done);
+
   if (!set) return null;
 
   function handleTap(answer: string | number) {
     if (selected !== null) return;
     setSelected(answer);
-    const q = set[current];
-    const correct = q.type === 'addition' ? answer === q.correct : answer === q.correct;
+    const q = set![current];
+    const correct = answer === q.correct;
     setIsCorrectAnswer(correct);
     if (correct) setScore(s => s + 1);
     setShowFeedback(true);
@@ -86,7 +86,7 @@ export default function AdditionGame() {
   function handleFeedbackComplete() {
     setShowFeedback(false);
     setSelected(null);
-    if (current + 1 >= set.length) {
+    if (current + 1 >= set!.length) {
       setDone(true);
     } else {
       setCurrent(c => c + 1);
@@ -100,26 +100,29 @@ export default function AdditionGame() {
   const q = set[current];
 
   return (
-    <GameShell title="Addition & Counting" current={current} total={set.length} score={score} color={COLOR} lightColor={LIGHT}>
+    <GameShell title="Addition & Counting" current={current} total={set.length} score={score} color={COLOR} lightColor={LIGHT} subject="maths">
       {q.type === 'addition' ? (
         <>
-          <p className="text-center text-xl" style={{ color: "#888" }}>What is the answer?</p>
+          <div className="flex items-center justify-center gap-2">
+            <p className="text-center text-xl" style={{ color: "#888" }}>What is the answer?</p>
+            <SpeakButton text={speakParts} lang="en-IN" color={COLOR} />
+          </div>
           <div className="flex items-center justify-center gap-4 w-full rounded-3xl p-6 mb-4"
             style={{ background: "white", border: `2px solid ${LIGHT}` }}>
             <div className="text-center">
-              <Abacus number={(q as any).a} />
-              <span className="text-4xl font-black block" style={{ color: COLOR }}>{(q as any).a}</span>
+              <Abacus number={q.a} />
+              <span className="text-4xl font-black block" style={{ color: COLOR }}>{q.a}</span>
             </div>
             <span className="text-5xl font-black" style={{ color: "#aaa" }}>+</span>
             <div className="text-center">
-              <Abacus number={(q as any).b} />
-              <span className="text-4xl font-black block" style={{ color: COLOR }}>{(q as any).b}</span>
+              <Abacus number={q.b} />
+              <span className="text-4xl font-black block" style={{ color: COLOR }}>{q.b}</span>
             </div>
             <span className="text-5xl font-black" style={{ color: "#aaa" }}>=</span>
             <span className="text-4xl font-black" style={{ color: "#ddd" }}>?</span>
           </div>
           <div className="flex flex-wrap gap-4 justify-center">
-            {(q as any).options.map((num: number) => {
+            {q.options.map((num) => {
               const isSelected = selected === num;
               const isCorrect = num === q.correct;
               let bg = "white", border = `2px solid ${LIGHT}`, color = COLOR;
@@ -137,25 +140,28 @@ export default function AdditionGame() {
         </>
       ) : (
         <>
-          <p className="text-center text-xl mb-4" style={{ color: "#888" }}>{(q as any).question}</p>
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <p className="text-center text-xl" style={{ color: "#888" }}>{q.question}</p>
+            <SpeakButton text={speakParts} lang="en-IN" color={COLOR} />
+          </div>
           <div className="flex items-center justify-center gap-8 w-full rounded-3xl p-6 mb-4"
             style={{ background: "white", border: `2px solid ${LIGHT}` }}>
             <div className="text-center">
               <div className="text-6xl mb-2">
-                {[...Array((q as any).left.count)].map((_, i) => (
-                  <span key={i}>{(q as any).left.emoji}</span>
+                {[...Array(q.left.count)].map((_, i) => (
+                  <span key={i}>{q.left.emoji}</span>
                 ))}
               </div>
-              <span className="text-2xl font-bold" style={{ color: COLOR }}>{(q as any).left.count}</span>
+              <span className="text-2xl font-bold" style={{ color: COLOR }}>{q.left.count}</span>
             </div>
             <div className="text-4xl font-black" style={{ color: "#aaa" }}>vs</div>
             <div className="text-center">
               <div className="text-6xl mb-2">
-                {[...Array((q as any).right.count)].map((_, i) => (
-                  <span key={i}>{(q as any).right.emoji}</span>
+                {[...Array(q.right.count)].map((_, i) => (
+                  <span key={i}>{q.right.emoji}</span>
                 ))}
               </div>
-              <span className="text-2xl font-bold" style={{ color: COLOR }}>{(q as any).right.count}</span>
+              <span className="text-2xl font-bold" style={{ color: COLOR }}>{q.right.count}</span>
             </div>
           </div>
           <div className="flex gap-4 justify-center">

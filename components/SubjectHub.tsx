@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { Subject, SUBJECTS, gamesFor } from "@/lib/catalog";
 import { loadProgress, StoredProgress } from "@/lib/progress";
 
@@ -15,7 +16,7 @@ export default function SubjectHub({ subject }: { subject: Subject }) {
       style={{ background: `linear-gradient(135deg, #fefefe 0%, ${meta.light} 100%)` }}>
       <div className="w-full max-w-lg flex flex-col gap-6">
         <div className="flex justify-between items-center">
-          <a href="/" style={{ color: meta.color, fontSize: "15px", fontWeight: 600 }}>← Home</a>
+          <Link href="/" style={{ color: meta.color, fontSize: "15px", fontWeight: 600 }}>← Home</Link>
           <span className="font-black text-2xl" style={{ color: meta.color }}>{meta.emoji} {meta.label}</span>
           <span style={{ width: "56px" }} />
         </div>
@@ -24,7 +25,7 @@ export default function SubjectHub({ subject }: { subject: Subject }) {
           {games.map(g => {
             const p = progress?.games[g.id];
             return (
-              <a key={g.id} href={g.href}
+              <Link key={g.id} href={g.href}
                 className="flex flex-col items-center gap-2 p-5 rounded-3xl text-center transition-transform active:scale-95"
                 style={{ background: "white", border: `2px solid ${g.light}` }}>
                 <span style={{ fontSize: "44px" }}>{g.emoji}</span>
@@ -33,7 +34,7 @@ export default function SubjectHub({ subject }: { subject: Subject }) {
                 <span style={{ fontSize: "12px", fontWeight: 700, color: p ? g.color : "#ccc" }}>
                   {p ? `⭐ ${p.bestScore}/${p.total}` : "Not played yet"}
                 </span>
-              </a>
+              </Link>
             );
           })}
         </div>

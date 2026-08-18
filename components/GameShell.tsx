@@ -1,5 +1,7 @@
 "use client";
 import { ReactNode } from "react";
+import Link from "next/link";
+import { Subject } from "@/lib/catalog";
 
 type Props = {
   title: string;
@@ -8,16 +10,17 @@ type Props = {
   score: number;
   color: string;
   lightColor: string;
+  subject: Subject;
   children: ReactNode;
 };
 
-export default function GameShell({ title, current, total, score, color, lightColor, children }: Props) {
+export default function GameShell({ title, current, total, score, color, lightColor, subject, children }: Props) {
   return (
     <main className="min-h-screen flex flex-col items-center p-4 pt-6"
       style={{ background: `linear-gradient(135deg, #fefefe 0%, ${lightColor} 100%)` }}>
       <div className="w-full max-w-lg flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <a href="/" style={{ color, fontSize: "15px", fontWeight: 600 }}>← Home</a>
+          <Link href={`/${subject}`} style={{ color, fontSize: "15px", fontWeight: 600 }}>← Back</Link>
           <span className="font-bold text-lg" style={{ color }}>{title}</span>
           <span style={{ color, fontSize: "15px", fontWeight: 600 }}>⭐ {score}</span>
         </div>

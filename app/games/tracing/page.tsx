@@ -1,6 +1,9 @@
 "use client";
 import { useRef, useState, useEffect } from "react";
+import GameShell from "@/components/GameShell";
 import ResultScreen from "@/components/ResultScreen";
+import SpeakButton from "@/components/SpeakButton";
+import { useAutoSpeak } from "@/lib/useAutoSpeak";
 import { useClientMemo } from "@/lib/useClientMemo";
 
 const COLOR = "#00897b";
@@ -60,6 +63,10 @@ export default function TracingGame() {
   const [completed, setCompleted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const letter = set ? set[current] : null;
+
+  // A child who can't read yet needs to hear which letter to trace, not just
+  // see it printed on screen.
+  useAutoSpeak([letter ? `Trace the letter ${letter}` : null], "en-IN", letter, !!letter);
 
   useEffect(() => {
     if (!letter) return;
@@ -169,55 +176,44 @@ export default function TracingGame() {
   if (done) return <ResultScreen score={score} total={set.length} color={COLOR} lightColor={LIGHT} gameId="tracing" subject="english" onReplay={restart} />;
 
   return (
-    <main className="min-h-screen flex flex-col items-center p-4 pt-6"
-      style={{ background: `linear-gradient(135deg, #fefefe 0%, ${LIGHT} 100%)` }}>
-      <div className="w-full max-w-lg flex flex-col gap-4">
-        <div className="flex justify-between items-center">
-          <a href="/" style={{ color: COLOR, fontSize: "15px", fontWeight: 600 }}>← Home</a>
-          <span className="font-bold text-lg" style={{ color: COLOR }}>Letter Tracing</span>
-          <span style={{ color: COLOR, fontSize: "15px", fontWeight: 600 }}>⭐ {score}</span>
-        </div>
-        <div style={{ background: LIGHT, height: "10px", borderRadius: "9999px" }}>
-          <div style={{ background: COLOR, height: "10px", borderRadius: "9999px", width: `${(current / set.length) * 100}%`, transition: "width 0.5s" }} />
-        </div>
-
-        <div className="flex items-center justify-center gap-4">
-          <div className="w-20 h-20 flex items-center justify-center rounded-2xl text-5xl font-black"
-            style={{ background: LIGHT, color: COLOR }}>{letter}</div>
-          <p style={{ color: "#aaa", fontSize: "15px" }}>Trace the letter {letter}</p>
-        </div>
-
-        <div className="relative rounded-3xl overflow-hidden"
-          style={{ background: "white", border: `2px solid ${LIGHT}` }}>
-          <canvas
-            ref={canvasRef}
-            width={400} height={360}
-            style={{ width: "100%", height: "auto", touchAction: "none", display: "block",
-              background: completed ? "#e8f5e9" : "white" }}
-            onMouseDown={startDraw} onMouseMove={moveDraw} onMouseUp={endDraw}
-            onTouchStart={startDraw} onTouchMove={moveDraw} onTouchEnd={endDraw}
-          />
-          {completed && (
-            <div className="absolute inset-0 flex items-center justify-center"
-              style={{ background: "rgba(232,245,233,0.7)" }}>
-              <span style={{ fontSize: "80px" }}>✅</span>
-            </div>
-          )}
-        </div>
-
-        <div className="flex gap-3">
-          <button onClick={clearCanvas}
-            className="flex-1 py-4 rounded-2xl text-lg font-bold active:scale-95 transition-transform"
-            style={{ background: "white", color: COLOR, border: `2px solid ${COLOR}` }}>
-            Clear ✗
-          </button>
-          <button onClick={checkLetter}
-            className="flex-1 py-4 rounded-2xl text-white text-lg font-bold active:scale-95 transition-transform"
-            style={{ background: completed ? "#aaa" : COLOR }}>
-            Done ✓
-          </button>
-        </div>
+    <GameShell title="Letter Tracing" current={current} total={set.length} score={score} color={COLOR} lightColor={LIGHT} subject="english">
+      <div className="flex items-center justify-center gap-4">
+        <div className="w-20 h-20 flex items-center justify-center rounded-2xl text-5xl font-black"
+          style={{ background: LIGHT, color: COLOR }}>{letter}</div>
+        <p style={{ color: "#aaa", fontSize: "15px" }}>Trace the letter {letter}</p>
+        <SpeakButton text={`Trace the letter ${letter}`} lang="en-IN" color={COLOR} />
       </div>
-    </main>
+
+      <div className="relative rounded-3xl overflow-hidden"
+        style={{ background: "white", border: `2px solid ${LIGHT}` }}>
+        <canvas
+          ref={canvasRef}
+          width={400} height={360}
+          style={{ width: "100%", height: "auto", touchAction: "none", display: "block",
+            background: completed ? "#e8f5e9" : "white" }}
+          onMouseDown={startDraw} onMouseMove={moveDraw} onMouseUp={endDraw}
+          onTouchStart={startDraw} onTouchMove={moveDraw} onTouchEnd={endDraw}
+        />
+        {completed && (
+          <div className="absolute inset-0 flex items-center justify-center"
+            style={{ background: "rgba(232,245,233,0.7)" }}>
+            <span style={{ fontSize: "80px" }}>✅</span>
+          </div>
+        )}
+      </div>
+
+      <div className="flex gap-3">
+        <button onClick={clearCanvas}
+          className="flex-1 py-4 rounded-2xl text-lg font-bold active:scale-95 transition-transform"
+          style={{ background: "white", color: COLOR, border: `2px solid ${COLOR}` }}>
+          Clear ✗
+        </button>
+        <button onClick={checkLetter}
+          className="flex-1 py-4 rounded-2xl text-white text-lg font-bold active:scale-95 transition-transform"
+          style={{ background: completed ? "#aaa" : COLOR }}>
+          Done ✓
+        </button>
+      </div>
+    </GameShell>
   );
 }

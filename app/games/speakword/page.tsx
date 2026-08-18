@@ -2,6 +2,8 @@
 import { useState } from "react";
 import GameShell from "@/components/GameShell";
 import ResultScreen from "@/components/ResultScreen";
+import SpeakButton from "@/components/SpeakButton";
+import { useAutoSpeak } from "@/lib/useAutoSpeak";
 import { useClientMemo } from "@/lib/useClientMemo";
 
 const COLOR = "#8e44ad";
@@ -49,6 +51,13 @@ export default function SpeakWordGame() {
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
 
+  const speakParts = set ? [set[current].question, ...set[current].options.map(o => o.l)] : [];
+
+  // A child who can't read yet needs the question AND every option name read
+  // aloud - the point of this game is to say the word, but they can't tap
+  // the matching label without hearing it first.
+  useAutoSpeak(speakParts, "en-IN", current, !!set && !done);
+
   if (!set) return null;
 
   function handleTap(label: string) {
@@ -67,10 +76,13 @@ export default function SpeakWordGame() {
 
   const q = set[current];
   return (
-    <GameShell title="Speak Word" current={current} total={set.length} score={score} color={COLOR} lightColor={LIGHT}>
+    <GameShell title="Speak Word" current={current} total={set.length} score={score} color={COLOR} lightColor={LIGHT} subject="english">
       <div className="w-full rounded-3xl p-6 text-center"
         style={{ background: "white", border: `2px solid ${LIGHT}` }}>
-        <p className="text-lg font-bold mb-4" style={{ color: COLOR }}>{q.question}</p>
+        <div className="flex items-center justify-center gap-2 mb-4">
+          <p className="text-lg font-bold" style={{ color: COLOR }}>{q.question}</p>
+          <SpeakButton text={speakParts} lang="en-IN" color={COLOR} />
+        </div>
         <div className="text-8xl mb-6">{q.options.find(o => o.l === q.correct)?.e}</div>
         <p className="text-sm" style={{ color: "#666" }}>Say the word aloud, then tap the correct name!</p>
       </div>

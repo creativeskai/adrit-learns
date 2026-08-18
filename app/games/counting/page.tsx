@@ -2,7 +2,10 @@
 import { useState } from "react";
 import GameShell from "@/components/GameShell";
 import ResultScreen from "@/components/ResultScreen";
+import SpeakButton from "@/components/SpeakButton";
+import { useAutoSpeak } from "@/lib/useAutoSpeak";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { makeCountingOptions } from "@/lib/mcqOptions";
 
 const COLOR = "#3a7bd5";
 const LIGHT = "#dbeeff";
@@ -22,16 +25,8 @@ const allRounds = [
   { count: 9, emoji: "🎪" }, { count: 10, emoji: "🎭" },
 ];
 
-function makeOptions(correct: number): number[] {
-  const opts = new Set([correct]);
-  while (opts.size < 4) {
-    const n = Math.max(1, correct + Math.floor(Math.random() * 5) - 2);
-    opts.add(n);
-  }
-  return Array.from(opts).sort(() => Math.random() - 0.5);
-}
-
 function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
+const makeOptions = makeCountingOptions;
 
 export default function CountingGame() {
   const data = useClientMemo(() => {
@@ -42,6 +37,10 @@ export default function CountingGame() {
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [done, setDone] = useState(false);
+
+  const speakParts = data ? ["How many do you see?", ...data.opts[current].map(n => String(n))] : [];
+
+  useAutoSpeak(speakParts, "en-IN", current, !!data && !done);
 
   if (!data) return null;
   const { set, opts } = data;
@@ -62,8 +61,11 @@ export default function CountingGame() {
 
   const q = set[current];
   return (
-    <GameShell title="Counting" current={current} total={set.length} score={score} color={COLOR} lightColor={LIGHT}>
-      <p className="text-center text-xl" style={{ color: "#888" }}>How many do you see?</p>
+    <GameShell title="Counting" current={current} total={set.length} score={score} color={COLOR} lightColor={LIGHT} subject="maths">
+      <div className="flex items-center justify-center gap-2">
+        <p className="text-center text-xl" style={{ color: "#888" }}>How many do you see?</p>
+        <SpeakButton text={speakParts} lang="en-IN" color={COLOR} />
+      </div>
       <div className="w-full rounded-3xl p-6 flex flex-wrap justify-center gap-3 items-center"
         style={{ background: "white", border: `2px solid ${LIGHT}`, minHeight: "180px" }}>
         {Array.from({ length: q.count }).map((_, i) => (

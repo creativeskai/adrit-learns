@@ -1,9 +1,11 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import ResultScreen from "@/components/ResultScreen";
 import SpeakButton from "@/components/SpeakButton";
 import { playCorrectSound, playWrongSound } from "@/lib/sounds";
 import { speak, SpeechLang } from "@/lib/tts";
+import { useAutoSpeak } from "@/lib/useAutoSpeak";
 import { Subject } from "@/lib/catalog";
 import { useClientMemo } from "@/lib/useClientMemo";
 
@@ -32,6 +34,18 @@ export default function MatchGame({ title, gameId, subject, color, light, pairs,
   const [wrongPair, setWrongPair] = useState<{ left: string; right: string } | null>(null);
   const [locked, setLocked] = useState(false);
   const [done, setDone] = useState(false);
+
+  // A child who can't read yet needs every word tile read aloud, not just the
+  // instructions - speak them all once when the board is ready.
+  const allLabels = leftItems && rightItems
+    ? [instructions, ...[...leftItems, ...rightItems].map(i => i.label).filter(Boolean) as string[]]
+    : [];
+  useAutoSpeak(allLabels, lang, !!leftItems);
+
+  function speakLabel(pairId: string, side: "left" | "right") {
+    const item = (side === "left" ? leftItems : rightItems)?.find(i => i.pairId === pairId);
+    if (item?.label) speak(item.label, lang);
+  }
 
   function evaluate(leftId: string, rightId: string) {
     setLocked(true);
@@ -65,6 +79,7 @@ export default function MatchGame({ title, gameId, subject, color, light, pairs,
     if (locked || matched.has(pairId)) return;
     if (selectedLeft === pairId) { setSelectedLeft(null); return; }
     setSelectedLeft(pairId);
+    speakLabel(pairId, "left");
     if (selectedRight) evaluate(pairId, selectedRight);
   }
 
@@ -72,6 +87,7 @@ export default function MatchGame({ title, gameId, subject, color, light, pairs,
     if (locked || matched.has(pairId)) return;
     if (selectedRight === pairId) { setSelectedRight(null); return; }
     setSelectedRight(pairId);
+    speakLabel(pairId, "right");
     if (selectedLeft) evaluate(selectedLeft, pairId);
   }
 
@@ -108,7 +124,7 @@ export default function MatchGame({ title, gameId, subject, color, light, pairs,
       style={{ background: `linear-gradient(135deg, #fefefe 0%, ${light} 100%)` }}>
       <div className="w-full max-w-lg flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <a href="/" style={{ color, fontSize: "15px", fontWeight: 600 }}>← Home</a>
+          <Link href={`/${subject}`} style={{ color, fontSize: "15px", fontWeight: 600 }}>← Back</Link>
           <span className="font-bold text-lg" style={{ color }}>{title}</span>
           <span style={{ color, fontSize: "15px", fontWeight: 600 }}>⭐ {matched.size}/{pairs.length}</span>
         </div>
@@ -120,7 +136,7 @@ export default function MatchGame({ title, gameId, subject, color, light, pairs,
         </div>
         <div className="flex items-center justify-center gap-2">
           <p className="text-center text-lg" style={{ color: "#888" }}>{instructions}</p>
-          <SpeakButton text={instructions} lang={lang} color={color} />
+          <SpeakButton text={allLabels} lang={lang} color={color} />
         </div>
 
         <div className="grid grid-cols-2 gap-3">
