@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fredoka } from "next/font/google";
 import "./globals.css";
 import TtsWarmup from "@/components/TtsWarmup";
@@ -12,6 +12,16 @@ const fredoka = Fredoka({ subsets: ["latin"], weight: ["500", "600", "700"], var
 export const metadata: Metadata = {
   title: "Adrit Learns",
   description: "Senior KG Learning Platform",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    title: "Adrit Learns",
+    statusBarStyle: "default",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#e07b39",
 };
 
 export default function RootLayout({
