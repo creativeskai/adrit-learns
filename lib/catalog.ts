@@ -44,6 +44,7 @@ export const GAMES: GameMeta[] = [
   { id: "subtraction", href: "/games/subtraction", emoji: "➖", label: "Subtraction", sub: "Take away & count", subject: "maths", color: "#c0392b", light: "#fdecea" },
   { id: "shapes", href: "/games/shapes", emoji: "🔺", label: "Shapes", sub: "Circles, squares & more", subject: "maths", color: "#2c3e50", light: "#eaecee" },
   { id: "ordinal", href: "/games/ordinal", emoji: "🥇", label: "Ordinal Numbers", sub: "First, second, third...", subject: "maths", color: "#d35400", light: "#fdf0e3" },
+  { id: "patterns", href: "/games/patterns", emoji: "🧩", label: "Patterns", sub: "What comes next?", subject: "maths", color: "#2c3e50", light: "#eaecee" },
 
   { id: "evs", href: "/games/evs", emoji: "🌿", label: "EVS Mix", sub: "Nature, animals & family", subject: "gk", color: "#27ae60", light: "#e8f8f0" },
   { id: "body-parts", href: "/games/body-parts", emoji: "🧍", label: "Body Parts", sub: "Know your body", subject: "gk", color: "#e67e22", light: "#fdf0e3" },
