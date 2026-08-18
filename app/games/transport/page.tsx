@@ -1,6 +1,7 @@
 "use client";
 import McqGame, { McqRound } from "@/components/McqGame";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#2980b9";
 const LIGHT = "#e3f2fd";
@@ -20,8 +21,6 @@ const rounds = [
   { question: "Which one travels underground in a city?", correct: "Metro", options: [{ l: "Metro", e: "🚇" }, { l: "Ship", e: "🚢" }, { l: "Plane", e: "✈️" }, { l: "Bicycle", e: "🚲" }] },
   { question: "Which one flies all the way up to space?", correct: "Rocket", options: [{ l: "Rocket", e: "🚀" }, { l: "Car", e: "🚗" }, { l: "Boat", e: "⛵" }, { l: "Bus", e: "🚌" }] },
 ];
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function TransportGame() {
   const rounds_ = useClientMemo<McqRound[]>(() =>

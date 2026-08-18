@@ -1,6 +1,7 @@
 "use client";
 import McqGame, { McqRound } from "@/components/McqGame";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#27ae60";
 const LIGHT = "#e8f8f0";
@@ -48,8 +49,6 @@ const rounds = [
   { question: "Which animal is wild, lives in water, and has sharp teeth?", correct: "Crocodile", options: [{ l: "Crocodile", e: "🐊" }, { l: "Fish", e: "🐟" }, { l: "Duck", e: "🦆" }, { l: "Frog", e: "🐸" }] },
   { question: "Which animal is a farm animal that pulls carts?", correct: "Horse", options: [{ l: "Horse", e: "🐴" }, { l: "Wolf", e: "🐺" }, { l: "Lion", e: "🦁" }, { l: "Tiger", e: "🐯" }] },
 ];
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function EVSGame() {
   const rounds_ = useClientMemo<McqRound[]>(() =>

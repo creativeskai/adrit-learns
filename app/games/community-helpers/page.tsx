@@ -1,6 +1,7 @@
 "use client";
 import McqGame, { McqRound } from "@/components/McqGame";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#2980b9";
 const LIGHT = "#e3f2fd";
@@ -18,8 +19,6 @@ const rounds = [
   { question: "Who takes care of us in the hospital?", correct: "Nurse", options: [{ l: "Nurse", e: "👩‍⚕️" }, { l: "Police", e: "👮" }, { l: "Farmer", e: "👨‍🌾" }, { l: "Chef", e: "👨‍🍳" }] },
   { question: "Who cuts and styles our hair?", correct: "Barber", options: [{ l: "Barber", e: "💇" }, { l: "Doctor", e: "👨‍⚕️" }, { l: "Postman", e: "📮" }, { l: "Firefighter", e: "🧑‍🚒" }] },
 ];
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function CommunityHelpersGame() {
   const rounds_ = useClientMemo<McqRound[]>(() =>

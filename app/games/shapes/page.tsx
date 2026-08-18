@@ -1,6 +1,7 @@
 "use client";
 import McqGame, { McqRound } from "@/components/McqGame";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#2c3e50";
 const LIGHT = "#eaecee";
@@ -24,8 +25,6 @@ function ShapeIcon({ shape, size = 130 }: { shape: string; size?: number }) {
     default: return null;
   }
 }
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 function makeOptions(correct: string) {
   const others = shuffle(shapeNames.filter(s => s !== correct)).slice(0, 3);

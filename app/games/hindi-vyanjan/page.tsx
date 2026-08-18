@@ -1,6 +1,7 @@
 "use client";
 import McqGame, { McqRound } from "@/components/McqGame";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#8e44ad";
 const LIGHT = "#f5eeff";
@@ -19,8 +20,6 @@ const consonants = [
   { letter: "ट", word: "टमाटर", emoji: "🍅" },
   { letter: "ड", word: "डिब्बा", emoji: "📦" },
 ];
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 function makeOptions(correctWord: string) {
   const others = shuffle(consonants.filter(v => v.word !== correctWord)).slice(0, 3);

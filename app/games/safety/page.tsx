@@ -1,6 +1,7 @@
 "use client";
 import McqGame, { McqRound } from "@/components/McqGame";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#e74c3c";
 const LIGHT = "#fdecea";
@@ -18,8 +19,6 @@ const rounds = [
   { question: "Which crossing helps you walk safely across a busy road?", correct: "Zebra Crossing", options: [{ l: "Zebra Crossing", e: "🚸" }, { l: "Skateboard", e: "🛹" }, { l: "Kite", e: "🪁" }, { l: "Balloon", e: "🎈" }] },
   { question: "If you feel sick, who should you tell?", correct: "Doctor", options: [{ l: "Doctor", e: "👨‍⚕️" }, { l: "Nobody", e: "🤐" }, { l: "Toy", e: "🧸" }, { l: "TV", e: "📺" }] },
 ];
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function SafetyGame() {
   const rounds_ = useClientMemo<McqRound[]>(() =>

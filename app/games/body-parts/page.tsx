@@ -1,6 +1,7 @@
 "use client";
 import McqGame, { McqRound } from "@/components/McqGame";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#e67e22";
 const LIGHT = "#fdf0e3";
@@ -26,8 +27,6 @@ const questions = [
   { question: "Which one do you run with?", correct: "Feet" },
   { question: "Which one pumps blood in your body?", correct: "Heart" },
 ];
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 function makeOptions(correct: string) {
   const correctPart = parts.find(p => p.label === correct)!;

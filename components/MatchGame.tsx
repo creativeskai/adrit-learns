@@ -9,6 +9,7 @@ import { speak, SpeechLang } from "@/lib/tts";
 import { useAutoSpeak } from "@/lib/useAutoSpeak";
 import { Subject } from "@/lib/catalog";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 export type MatchPair = { id: string; left: { label?: string; emoji?: string }; right: { label?: string; emoji?: string } };
 
@@ -22,8 +23,6 @@ type Props = {
   instructions?: string;
   lang?: SpeechLang;
 };
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function MatchGame({ title, gameId, subject, color, light, pairs, instructions = "Tap a card, then tap its match", lang = "en-IN" }: Props) {
   const leftItems = useClientMemo(() => shuffle(pairs.map(p => ({ pairId: p.id, ...p.left }))));

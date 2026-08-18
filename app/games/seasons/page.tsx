@@ -1,6 +1,7 @@
 "use client";
 import McqGame, { McqRound } from "@/components/McqGame";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#16a085";
 const LIGHT = "#e0f7f2";
@@ -25,8 +26,6 @@ const rounds = [
   { question: "Which season do we drink hot soup to stay warm?", correct: "Winter" },
   { question: "Which season do frogs come out and ponds fill up?", correct: "Rainy" },
 ];
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function SeasonsGame() {
   const rounds_ = useClientMemo<McqRound[]>(() =>

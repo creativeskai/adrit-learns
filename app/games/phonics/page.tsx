@@ -4,6 +4,7 @@ import GameShell from "@/components/GameShell";
 import ResultScreen from "@/components/ResultScreen";
 import { useClientMemo } from "@/lib/useClientMemo";
 import { speak as ttsSpeak } from "@/lib/tts";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#f39c12";
 const LIGHT = "#fff8e1";
@@ -40,8 +41,6 @@ const rounds = [
   { letter: "C", sound: "Kuh as in Cup", emoji: "🥤", word: "Cup" },
   { letter: "D", sound: "Duh as in Duck", emoji: "🦆", word: "Duck" },
 ];
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function PhonicsGame() {
   const set = useClientMemo(() => shuffle(rounds).slice(0, 8));

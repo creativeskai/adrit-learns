@@ -5,7 +5,7 @@ import ResultScreen from "@/components/ResultScreen";
 import SpeakButton from "@/components/SpeakButton";
 import { useAutoSpeak } from "@/lib/useAutoSpeak";
 import { useClientMemo } from "@/lib/useClientMemo";
-import { makeCountingOptions } from "@/lib/mcqOptions";
+import { makeCountingOptions, shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#3a7bd5";
 const LIGHT = "#dbeeff";
@@ -25,7 +25,6 @@ const allRounds = [
   { count: 9, emoji: "🎪" }, { count: 10, emoji: "🎭" },
 ];
 
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 const makeOptions = makeCountingOptions;
 
 export default function CountingGame() {

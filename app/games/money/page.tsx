@@ -5,7 +5,7 @@ import ResultScreen from "@/components/ResultScreen";
 import SpeakButton from "@/components/SpeakButton";
 import { useAutoSpeak } from "@/lib/useAutoSpeak";
 import { useClientMemo } from "@/lib/useClientMemo";
-import { makeCountingOptions } from "@/lib/mcqOptions";
+import { makeCountingOptions, shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#d4a017";
 const LIGHT = "#fdf6e3";
@@ -25,8 +25,6 @@ const items = [
   { name: "Cookie", emoji: "🍪", price: 4 },
   { name: "Cap", emoji: "🧢", price: 3 },
 ];
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function MoneyGame() {
   const data = useClientMemo(() => {

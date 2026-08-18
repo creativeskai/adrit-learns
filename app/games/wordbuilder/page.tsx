@@ -6,6 +6,7 @@ import SpeakButton from "@/components/SpeakButton";
 import { speak } from "@/lib/tts";
 import { useAutoSpeak } from "@/lib/useAutoSpeak";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#e74c3c";
 const LIGHT = "#fdecea";
@@ -45,8 +46,6 @@ const words = [
   { word: "POT", emoji: "🍲", hint: "You cook food in this" },
 ];
 
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function WordBuilderGame() {
   const set = useClientMemo(() => shuffle(words).slice(0, 8));

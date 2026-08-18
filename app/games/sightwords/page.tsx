@@ -1,6 +1,7 @@
 "use client";
 import McqGame, { McqRound } from "@/components/McqGame";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#c0392b";
 const LIGHT = "#fdecea";
@@ -10,8 +11,6 @@ const LIGHT = "#fdecea";
 // word to its printed form - so text-only options are the correct format
 // here, not an accidental reading barrier the way Shapes' used to be.
 const words = ["the", "a", "is", "in", "on", "it", "and", "up", "to", "we"];
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 function makeOptions(correct: string) {
   const others = shuffle(words.filter(w => w !== correct)).slice(0, 3);

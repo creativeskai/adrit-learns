@@ -1,6 +1,7 @@
 "use client";
 import McqGame, { McqRound } from "@/components/McqGame";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#8e44ad";
 const LIGHT = "#f5eeff";
@@ -32,8 +33,6 @@ const rounds = PAIRS.flatMap(([a, b]) => [
   { prompt: a, correct: b },
   { prompt: b, correct: a },
 ]);
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 function findTerm(label: string) {
   return TERMS.find(t => t.label === label)!;

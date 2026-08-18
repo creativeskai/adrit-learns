@@ -5,6 +5,7 @@ import ResultScreen from "@/components/ResultScreen";
 import SpeakButton from "@/components/SpeakButton";
 import { useAutoSpeak } from "@/lib/useAutoSpeak";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#8e44ad";
 const LIGHT = "#f5eeff";
@@ -41,8 +42,6 @@ const rounds = [
   { question: "What do you see?", correct: "Plane", options: [{ l: "Car", e: "🚗" }, { l: "Bus", e: "🚌" }, { l: "Bike", e: "🚲" }, { l: "Plane", e: "✈️" }] },
   { question: "What do you see?", correct: "Grape", options: [{ l: "Apple", e: "🍎" }, { l: "Banana", e: "🍌" }, { l: "Orange", e: "🍊" }, { l: "Grape", e: "🍇" }] },
 ];
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function SpeakWordGame() {
   const set = useClientMemo(() => shuffle(rounds).slice(0, 8));

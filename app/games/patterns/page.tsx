@@ -1,6 +1,7 @@
 "use client";
 import McqGame, { McqRound } from "@/components/McqGame";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#2c3e50";
 const LIGHT = "#eaecee";
@@ -28,8 +29,6 @@ const patterns: { sequence: string[]; correct: string }[] = [
   { sequence: ["Balloon", "Gift", "Balloon", "Gift", "Balloon"], correct: "Gift" },
   { sequence: ["Strawberry", "Orange", "Lemon", "Strawberry", "Orange"], correct: "Lemon" },
 ];
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 function makeOptions(correct: string, used: string[]) {
   const pool = Object.keys(EMOJI_POOL).filter(l => l !== correct && !used.includes(l));

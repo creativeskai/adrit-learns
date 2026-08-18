@@ -1,6 +1,7 @@
 "use client";
 import McqGame, { McqRound } from "@/components/McqGame";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#e07b39";
 const LIGHT = "#fde8d8";
@@ -39,8 +40,6 @@ const rounds = [
   { letter: "E", correct: "Elephant", options: [{ l: "Elephant", e: "🐘" }, { l: "Emu", e: "🐦" }, { l: "Eagle", e: "🦅" }, { l: "Eel", e: "🐍" }] },
   { letter: "F", correct: "Flower",   options: [{ l: "Flower", e: "🌻" }, { l: "Flamingo", e: "🦩" }, { l: "Fox", e: "🦊" }, { l: "Frog", e: "🐸" }] },
 ];
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function AlphabetGame() {
   const rounds_ = useClientMemo<McqRound[]>(() =>

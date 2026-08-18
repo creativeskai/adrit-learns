@@ -5,6 +5,7 @@ import ResultScreen from "@/components/ResultScreen";
 import SpeakButton from "@/components/SpeakButton";
 import { useAutoSpeak } from "@/lib/useAutoSpeak";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#00897b";
 const LIGHT = "#e0f2f1";
@@ -49,8 +50,6 @@ const guidePoints: Record<string, {x:number,y:number}[][][]> = {
   8: [[[{x:180,y:80},{x:130,y:100},{x:130,y:160},{x:180,y:185},{x:230,y:160},{x:230,y:100},{x:180,y:80}],[{x:180,y:185},{x:130,y:220},{x:130,y:260},{x:180,y:280},{x:230,y:260},{x:230,y:220},{x:180,y:185}]]],
   9: [[[{x:130,y:120},{x:160,y:80},{x:240,y:90},{x:270,y:130},{x:270,y:200},{x:240,y:270},{x:180,y:280},{x:110,y:250},{x:110,y:180},{x:140,y:160},{x:220,y:170}]]],
 };
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function TracingGame() {
   const set = useClientMemo(() => shuffle(letters).slice(0, 8));

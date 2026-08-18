@@ -7,7 +7,7 @@ import SpeakButton from "@/components/SpeakButton";
 import Abacus from "@/components/Abacus";
 import { useAutoSpeak } from "@/lib/useAutoSpeak";
 import { useClientMemo } from "@/lib/useClientMemo";
-import { makeAdditionOptions } from "@/lib/mcqOptions";
+import { makeAdditionOptions, shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#c0392b";
 const LIGHT = "#fdecea";
@@ -24,8 +24,6 @@ const subtractionRounds = [
   { a: 8, b: 1, correct: 7 }, { a: 8, b: 2, correct: 6 }, { a: 8, b: 3, correct: 5 }, { a: 8, b: 4, correct: 4 }, { a: 8, b: 5, correct: 3 }, { a: 8, b: 6, correct: 2 }, { a: 8, b: 7, correct: 1 },
   { a: 9, b: 1, correct: 8 }, { a: 9, b: 2, correct: 7 }, { a: 9, b: 3, correct: 6 }, { a: 9, b: 4, correct: 5 }, { a: 9, b: 5, correct: 4 }, { a: 9, b: 6, correct: 3 }, { a: 9, b: 7, correct: 2 }, { a: 9, b: 8, correct: 1 },
 ];
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 // Reuses the addition game's distractor picker - same "pick 4 close numbers,
 // clamp at 1" logic works for any small positive correct value, subtraction

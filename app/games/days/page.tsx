@@ -1,6 +1,7 @@
 "use client";
 import McqGame, { McqRound } from "@/components/McqGame";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#27ae60";
 const LIGHT = "#e8f8f0";
@@ -10,8 +11,6 @@ const LIGHT = "#e8f8f0";
 // exercise (matching sound to print, the actual skill), plus a few
 // "what comes after/before" rounds to build the sequence.
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 function makeOptions(correct: string) {
   const others = shuffle(DAYS.filter(d => d !== correct)).slice(0, 3);

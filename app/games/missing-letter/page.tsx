@@ -1,6 +1,7 @@
 "use client";
 import FillBlankGame, { FillBlankRound } from "@/components/FillBlankGame";
 import { useClientMemo } from "@/lib/useClientMemo";
+import { shuffle } from "@/lib/mcqOptions";
 
 const COLOR = "#16a085";
 const LIGHT = "#e0f7f2";
@@ -17,8 +18,6 @@ const words = [
   { template: "R___N", correct: "U", options: ["U", "A", "O", "I"], emoji: "🏃", speakText: "Moving fast on your feet" },
   { template: "B___S", correct: "U", options: ["U", "A", "O", "I"], emoji: "🚌", speakText: "A big yellow vehicle" },
 ];
-
-function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
 export default function MissingLetterGame() {
   const rounds = useClientMemo<FillBlankRound[]>(() =>
