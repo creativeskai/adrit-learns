@@ -35,6 +35,7 @@ export const GAMES: GameMeta[] = [
 
   { id: "hindi-varnamala", href: "/games/hindi-varnamala", emoji: "🔡", label: "वर्णमाला", sub: "Hindi vowels", subject: "hindi", color: "#d35400", light: "#fdece3" },
   { id: "hindi-vyanjan", href: "/games/hindi-vyanjan", emoji: "🔠", label: "व्यंजन", sub: "Hindi consonants", subject: "hindi", color: "#8e44ad", light: "#f5eeff" },
+  { id: "hindi-matra", href: "/games/hindi-matra", emoji: "🅰️", label: "मात्रा", sub: "Vowel signs", subject: "hindi", color: "#16a085", light: "#e0f7f2" },
   { id: "hindi-picture-match", href: "/games/hindi-picture-match", emoji: "🔗", label: "चित्र मिलान", sub: "Match pictures & words", subject: "hindi", color: "#c0392b", light: "#fdecea" },
 
   { id: "counting", href: "/games/counting", emoji: "🔢", label: "Counting", sub: "Count objects 1–10", subject: "maths", color: "#3a7bd5", light: "#dbeeff" },
