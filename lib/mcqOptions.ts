@@ -2,12 +2,12 @@
 // (no React/Next imports) so they're directly unit-testable.
 export function shuffle<T>(arr: T[]): T[] { return [...arr].sort(() => Math.random() - 0.5); }
 
-// Picks 3 wrong answers near `correct`, from the fixed 1-10 counting range.
-// A prior version generated a random offset and clamped it to >=1, which for
-// correct=1 could only ever land on {1,2,3} - never the 4 distinct values
-// its while-loop demanded, so it spun forever and froze the tab.
-export function makeCountingOptions(correct: number): number[] {
-  const candidates = Array.from({ length: 10 }, (_, i) => i + 1).filter(n => n !== correct);
+// Picks 3 wrong answers near `correct`, from the fixed 1..max counting
+// range. A prior version generated a random offset and clamped it to >=1,
+// which for correct=1 could only ever land on {1,2,3} - never the 4 distinct
+// values its while-loop demanded, so it spun forever and froze the tab.
+export function makeCountingOptions(correct: number, max: number = 10): number[] {
+  const candidates = Array.from({ length: max }, (_, i) => i + 1).filter(n => n !== correct);
   candidates.sort((a, b) => Math.abs(a - correct) - Math.abs(b - correct));
   const distractors = shuffle(candidates.slice(0, 5)).slice(0, 3);
   return shuffle([correct, ...distractors]);

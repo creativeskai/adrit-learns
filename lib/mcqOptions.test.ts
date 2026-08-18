@@ -19,6 +19,21 @@ describe("makeCountingOptions", () => {
       }
     }
   });
+
+  it("terminates and returns 4 distinct options including `correct`, for every count 1-20 with max=20", () => {
+    for (let correct = 1; correct <= 20; correct++) {
+      for (let i = 0; i < 50; i++) {
+        const opts = makeCountingOptions(correct, 20);
+        expect(opts).toHaveLength(4);
+        expect(new Set(opts).size).toBe(4);
+        expect(opts).toContain(correct);
+        opts.forEach(n => {
+          expect(n).toBeGreaterThanOrEqual(1);
+          expect(n).toBeLessThanOrEqual(20);
+        });
+      }
+    }
+  });
 });
 
 describe("makeAdditionOptions", () => {

@@ -39,6 +39,7 @@ export const GAMES: GameMeta[] = [
   { id: "hindi-picture-match", href: "/games/hindi-picture-match", emoji: "🔗", label: "चित्र मिलान", sub: "Match pictures & words", subject: "hindi", color: "#c0392b", light: "#fdecea" },
 
   { id: "counting", href: "/games/counting", emoji: "🔢", label: "Counting", sub: "Count objects 1–10", subject: "maths", color: "#3a7bd5", light: "#dbeeff" },
+  { id: "counting-teens", href: "/games/counting-teens", emoji: "🔟", label: "Numbers 11-20", sub: "Count objects 11–20", subject: "maths", color: "#3a7bd5", light: "#dbeeff" },
   { id: "addition", href: "/games/addition", emoji: "➕", label: "Addition", sub: "Sums & counting", subject: "maths", color: "#9b59b6", light: "#f3e8ff" },
   { id: "subtraction", href: "/games/subtraction", emoji: "➖", label: "Subtraction", sub: "Take away & count", subject: "maths", color: "#c0392b", light: "#fdecea" },
   { id: "shapes", href: "/games/shapes", emoji: "🔺", label: "Shapes", sub: "Circles, squares & more", subject: "maths", color: "#2c3e50", light: "#eaecee" },
