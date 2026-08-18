@@ -9,8 +9,18 @@
 }
 
 body {
-  font-family: sans-serif;
+  /* Devanagari glyphs aren't in Fredoka's latin subset, so they fall back
+     to the system sans-serif automatically - no per-language handling
+     needed, the browser picks per-character. */
+  font-family: var(--font-fredoka), system-ui, sans-serif;
   background: #fef9f0;
+}
+
+/* Soft elevation for every card/button using Tailwind's rounded-3xl or
+   rounded-2xl utility - covers game option tiles, content panels, and
+   buttons app-wide from one rule instead of touching 30+ page files. */
+.rounded-3xl, .rounded-2xl {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 /* Tap-heavy touch UI: skip the ~300ms tap delay and the gray flash Android/iOS
