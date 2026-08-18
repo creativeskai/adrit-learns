@@ -29,6 +29,7 @@ export const GAMES: GameMeta[] = [
   { id: "speakword", href: "/games/speakword", emoji: "🗣️", label: "Speak Word", sub: "Say the word aloud", subject: "english", color: "#8e44ad", light: "#f5eeff" },
   { id: "picture-word-match", href: "/games/picture-word-match", emoji: "🔗", label: "Picture Match", sub: "Link pictures to words", subject: "english", color: "#2980b9", light: "#e3f2fd" },
   { id: "missing-letter", href: "/games/missing-letter", emoji: "❓", label: "Missing Letter", sub: "Fill in the blank", subject: "english", color: "#16a085", light: "#e0f7f2" },
+  { id: "rhyming", href: "/games/rhyming", emoji: "🎵", label: "Rhyming Words", sub: "Words that sound alike", subject: "english", color: "#f39c12", light: "#fff8e1" },
 
   { id: "hindi-varnamala", href: "/games/hindi-varnamala", emoji: "🔡", label: "वर्णमाला", sub: "Hindi letters", subject: "hindi", color: "#d35400", light: "#fdece3" },
   { id: "hindi-picture-match", href: "/games/hindi-picture-match", emoji: "🔗", label: "चित्र मिलान", sub: "Match pictures & words", subject: "hindi", color: "#c0392b", light: "#fdecea" },
