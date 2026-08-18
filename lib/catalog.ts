@@ -53,6 +53,7 @@ export const GAMES: GameMeta[] = [
   { id: "community-helpers", href: "/games/community-helpers", emoji: "👮", label: "Helpers", sub: "Community helpers", subject: "gk", color: "#2980b9", light: "#e3f2fd" },
   { id: "seasons", href: "/games/seasons", emoji: "🌦️", label: "Seasons", sub: "Summer, rainy & winter", subject: "gk", color: "#16a085", light: "#e0f7f2" },
   { id: "safety", href: "/games/safety", emoji: "🦺", label: "Safety", sub: "Good habits & staying safe", subject: "gk", color: "#e74c3c", light: "#fdecea" },
+  { id: "transport", href: "/games/transport", emoji: "🚦", label: "Transport", sub: "Land, water & air", subject: "gk", color: "#2980b9", light: "#e3f2fd" },
 ];
 
 export function gamesFor(subject: Subject): GameMeta[] {
