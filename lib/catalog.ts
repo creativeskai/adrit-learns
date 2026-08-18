@@ -33,7 +33,8 @@ export const GAMES: GameMeta[] = [
   { id: "opposites", href: "/games/opposites", emoji: "🔄", label: "Opposites", sub: "Big & small, hot & cold", subject: "english", color: "#8e44ad", light: "#f5eeff" },
   { id: "sightwords", href: "/games/sightwords", emoji: "👁️", label: "Sight Words", sub: "The, a, is, and...", subject: "english", color: "#c0392b", light: "#fdecea" },
 
-  { id: "hindi-varnamala", href: "/games/hindi-varnamala", emoji: "🔡", label: "वर्णमाला", sub: "Hindi letters", subject: "hindi", color: "#d35400", light: "#fdece3" },
+  { id: "hindi-varnamala", href: "/games/hindi-varnamala", emoji: "🔡", label: "वर्णमाला", sub: "Hindi vowels", subject: "hindi", color: "#d35400", light: "#fdece3" },
+  { id: "hindi-vyanjan", href: "/games/hindi-vyanjan", emoji: "🔠", label: "व्यंजन", sub: "Hindi consonants", subject: "hindi", color: "#8e44ad", light: "#f5eeff" },
   { id: "hindi-picture-match", href: "/games/hindi-picture-match", emoji: "🔗", label: "चित्र मिलान", sub: "Match pictures & words", subject: "hindi", color: "#c0392b", light: "#fdecea" },
 
   { id: "counting", href: "/games/counting", emoji: "🔢", label: "Counting", sub: "Count objects 1–10", subject: "maths", color: "#3a7bd5", light: "#dbeeff" },
